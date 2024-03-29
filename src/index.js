@@ -1,15 +1,20 @@
+class ProjectHandler {
+    static projects = [];
 
-class Project {
-    constructor() {
-        this.name = "My Project";
-        this.todos = []
+    static addProject() {
+        this.projects.push(new Project)
     }
 
-    static projects = [
-        {}
-    ];
+    static addTodo(projectIndex = 0) {
+        this.projects[projectIndex].todos.push(new Todo);
+    }
+}
 
-
+class Project {
+    constructor(name = "My Project") {
+        this.name = "";
+        this.todos = []
+    }
 }
 
 class Todo {
@@ -23,28 +28,36 @@ class Todo {
     }
 
     editProperty(property, value) {
-        if (property !== priority && property !== isDone) {
-            this.property = value
-    }   }
+        if (property !== "priority" && property !== "isDone") {
+            this[property] = value
+        }
+    }
 
     toggleisDone() {
         this.isDone === false ? this.isDone = true : this.isDone = false;
     }
 
     togglePriority() {
-        switch(this.Priority) {
+        switch(this.priority) {
             case "Low":
-                this.Priority = "Normal"
+                this.priority = "Normal"
                 break
             case "Normal":
-                this.Priority = "High"
+                this.priority = "High"
                 break
             case "High":
-                this.Priority = "Low"
+                this.priority = "Low"
                 break;
         }
     }
-
-
-
 }
+
+ProjectHandler.addProject()
+ProjectHandler.addTodo()
+console.log(ProjectHandler.projects)
+
+ProjectHandler.projects[0].todos[0].toggleisDone()
+ProjectHandler.projects[0].todos[0].editProperty("description", "wolololo")
+ProjectHandler.projects[0].todos[0].togglePriority()
+ProjectHandler.projects[0].todos[0].togglePriority()
+ProjectHandler.projects[0].todos[0].togglePriority()
