@@ -1,3 +1,5 @@
+import StorageHandler from './storage.js'
+
 class ProjectHandler {
     static projectsArray = []
 
@@ -66,59 +68,61 @@ class Todo {
     }
 }
 
-class StorageHandler {
-    static projectsParsed = []
-    static projectsProcessed = []
+//here was storage
+// class StorageHandler {
+//     static projectsParsed = []
+//     static projectsProcessed = []
 
-    static save(projects = ProjectHandler.projectsArray) {
-        const projectsJSON = JSON.stringify(projects)
-        localStorage.setItem("projectsJSON", projectsJSON)
-    }
+//     static save(projects = ProjectHandler.projectsArray) {
+//         const projectsJSON = JSON.stringify(projects)
+//         localStorage.setItem("projectsJSON", projectsJSON)
+//     }
 
-    static load(reference = "projectsJSON") {
-        const text = localStorage.getItem(reference)
-        this.projectsParsed = JSON.parse(text)
-    }
+//     static load(reference = "projectsJSON") {
+//         const text = localStorage.getItem(reference)
+//         this.projectsParsed = JSON.parse(text)
+//     }
 
-    static addMethods() {
-        const output = []
+//     static addMethods() {
+//         const output = []
 
-        this.projectsParsed.forEach(project => {
-            const newProject = new Project(project.name)
-            const todosForNewProject = []
+//         this.projectsParsed.forEach(project => {
+//             const newProject = new Project(project.name)
+//             const todosForNewProject = []
 
-            project.todos.forEach(todo => {
-                const newTodo = new Todo(todo.title, 
-                                        todo.description,
-                                        todo.dueDate,
-                                        todo.notes,
-                                        todo.priority,
-                                        todo.isDone)
+//             project.todos.forEach(todo => {
+//                 const newTodo = new Todo(todo.title, 
+//                                         todo.description,
+//                                         todo.dueDate,
+//                                         todo.notes,
+//                                         todo.priority,
+//                                         todo.isDone)
                 
-                todosForNewProject.push(newTodo)
-            })
+//                 todosForNewProject.push(newTodo)
+//             })
         
-            newProject.todos = todosForNewProject
+//             newProject.todos = todosForNewProject
 
-            output.push(newProject)
-        })
+//             output.push(newProject)
+//         })
 
-        this.projectsProcessed = output;
-    }
+//         this.projectsProcessed = output;
+//     }
 
-    static rebuildTo(array = ProjectHandler.projectsArray) {
-        this.load()
-        this.addMethods()
-        array = this.projectsProcessed
-    }
+//     static rebuildTo(array = ProjectHandler.projectsArray) {
+//         this.load()
+//         this.addMethods()
+//         array = this.projectsProcessed
+//     }
 
-    static saveAndRebuildTo(array = ProjectHandler.projectsArray) {
-        this.save()
-        this.load()
-        this.addMethods()
-        array = this.projectsProcessed
-    }
-}
+//     static saveAndRebuildTo(array = ProjectHandler.projectsArray) {
+//         this.save()
+//         this.load()
+//         this.addMethods()
+//         array = this.projectsProcessed
+//     }
+// }
+//end storage
 
 function appEngine() {//iife?
 
@@ -150,6 +154,6 @@ console.log(ProjectHandler.projectsArray)
 // console.log("processed data-end:")
 // console.log(StorageHandler.projectsProcessed)
 
-StorageHandler.saveAndRebuildTo()
+StorageHandler.saveAndRebuildTo(ProjectHandler.projectsArray)
 
 StorageHandler.projectsProcessed[0].todos[0].toggleisDone();
