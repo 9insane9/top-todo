@@ -1,4 +1,7 @@
-import StorageHandler from './storage.js'
+import StorageHandler from './storage.js';
+import { format, addDays } from 'date-fns';
+import { displayController } from './display.js';
+import css from './style.css';
 
 class ProjectHandler {
     static projectsArray = []
@@ -68,92 +71,39 @@ class Todo {
     }
 }
 
-//here was storage
-// class StorageHandler {
-//     static projectsParsed = []
-//     static projectsProcessed = []
+class DateHandler {
+    formatDate(date) {
+        return format(date, "do MMMM yyyy")
+    }
 
-//     static save(projects = ProjectHandler.projectsArray) {
-//         const projectsJSON = JSON.stringify(projects)
-//         localStorage.setItem("projectsJSON", projectsJSON)
-//     }
-
-//     static load(reference = "projectsJSON") {
-//         const text = localStorage.getItem(reference)
-//         this.projectsParsed = JSON.parse(text)
-//     }
-
-//     static addMethods() {
-//         const output = []
-
-//         this.projectsParsed.forEach(project => {
-//             const newProject = new Project(project.name)
-//             const todosForNewProject = []
-
-//             project.todos.forEach(todo => {
-//                 const newTodo = new Todo(todo.title, 
-//                                         todo.description,
-//                                         todo.dueDate,
-//                                         todo.notes,
-//                                         todo.priority,
-//                                         todo.isDone)
-                
-//                 todosForNewProject.push(newTodo)
-//             })
-        
-//             newProject.todos = todosForNewProject
-
-//             output.push(newProject)
-//         })
-
-//         this.projectsProcessed = output;
-//     }
-
-//     static rebuildTo(array = ProjectHandler.projectsArray) {
-//         this.load()
-//         this.addMethods()
-//         array = this.projectsProcessed
-//     }
-
-//     static saveAndRebuildTo(array = ProjectHandler.projectsArray) {
-//         this.save()
-//         this.load()
-//         this.addMethods()
-//         array = this.projectsProcessed
-//     }
-// }
-//end storage
-
-function appEngine() {//iife?
-
+    static tomorrow() {
+        const today = new Date()
+        const tomorrow = addDays(today, 1)
+        const formatted = format(tomorrow, "do MMMM yyyy")
+        console.log(formatted)
+        return formatted
+    }
 }
 
+displayController.createMainLayout()
 
 ProjectHandler.addProject()
 ProjectHandler.addProject("testproject2")
 ProjectHandler.addTodo(0)
 ProjectHandler.addTodo(1)
-// console.log(ProjectHandler.projectsArray)
-
 ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
 ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
+ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
+ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
 ProjectHandler.projectsArray[0].todos[0].togglePriority()
 ProjectHandler.projectsArray[0].todos[0].togglePriority()
 
-console.log("intial data")
-console.log(ProjectHandler.projectsArray)
+StorageHandler.saveAndRebuildTo(ProjectHandler.projectsArray, Project, Todo)
 
+ProjectHandler.projectsArray[0].todos[0].toggleisDone();
 
-//test
-// StorageHandler.save()
-// StorageHandler.load()
-// console.log("parsed data:")
-// console.log(StorageHandler.projectsParsed)
+displayController.renderProjects(ProjectHandler.projectsArray)
 
-// StorageHandler.addMethods()
-// console.log("processed data-end:")
-// console.log(StorageHandler.projectsProcessed)
+function potato() {
 
-StorageHandler.saveAndRebuildTo(ProjectHandler.projectsArray)
-
-StorageHandler.projectsProcessed[0].todos[0].toggleisDone();
+}

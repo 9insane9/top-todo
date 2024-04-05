@@ -1,0 +1,17 @@
+.display-top {
+    display: flex;
+    border: 1px solid green;
+    height: 800px;
+    width: 1000px;
+}
+
+.left-panel {
+    width: 25%;
+    border: 1px solid red;
+}
+
+.right-panel {
+    width: 75%;
+    border: 1px solid blue;
+}
+
