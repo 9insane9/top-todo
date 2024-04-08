@@ -100,10 +100,63 @@ ProjectHandler.projectsArray[0].todos[0].togglePriority()
 
 StorageHandler.saveAndRebuildTo(ProjectHandler.projectsArray, Project, Todo)
 
-ProjectHandler.projectsArray[0].todos[0].toggleisDone();
+ProjectHandler.projectsArray[0].todos[0].toggleisDone()
 
 displayController.renderProjects(ProjectHandler.projectsArray)
 
-function potato() {
+function app() {
+    let isProjectPanelVisible = 1
+
+    function attachProjectPanelBtnEvent() {
+        const projectPanelBtn = document.querySelector(".projects-button")
+        projectPanelBtn.addEventListener("click", projectPanelEvent)
+    }
+
+    function projectPanelEvent() {
+        const leftPanelEl = document.querySelector(".left-panel")
+        leftPanelEl.classList.toggle("invisible")
+        isProjectPanelVisible === 1 ? isProjectPanelVisible = 0 : isProjectPanelVisible = 1
+        console.log(`panel visibility ${isProjectPanelVisible}`)
+
+    }
+    
+    function attachProjectTileEvents() {
+        const projectTileElList = document.querySelectorAll(".project-tile")
+
+        projectTileElList.forEach(element => {
+            element.addEventListener("click", (event) => {
+                const index = event.target.getAttribute("data-index")
+                displayController.renderTodos(ProjectHandler.projectsArray, index)
+                attachTodoEvents()
+            })
+        })
+    }
+
+    function attachTodoEvents() {
+        const todoElList = document.querySelectorAll(".todo")
+
+        todoElList.forEach(element => {
+            element.addEventListener("click", (event) => {
+                switch (event.target.getAttribute("class")) {
+                    case "edit-btn":
+                        console.log("opening edit dialog")
+                        break
+                    case "delete-btn":
+                        const currentProject = displayController.getCurrentProjectIndex()
+                        const currentTodo = event.target.getAttribute("data-index")
+
+                        ProjectHandler.deleteTodo(currentProject, currentTodo)
+                        displayController.renderTodos(ProjectHandler.projectsArray, currentProject)
+                    break
+                }})})
+        }
+
+        attachProjectTileEvents()
+        attachTodoEvents()
+        attachProjectPanelBtnEvent()
+    
+    // return {listenProject, listenTodo}
 
 }
+
+app()

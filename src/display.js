@@ -1,44 +1,41 @@
 export const displayController = (function() {
+    let currentProjectIndex = 0
 
-    function createMainLayout() { //this needs to vomit out its garbage so others could consume
+    function createMainLayout() {
         const bodyEl = document.querySelector("body")
 
+        const containerEl = document.createElement("div")
         const displayTopEl = document.createElement("div")
-        displayTopEl.classList.add("display-top")
-
         const leftPanelEl = document.createElement("div")
-        leftPanelEl.classList.add("left-panel")
-
         const rightPanelEl = document.createElement("div")
-        rightPanelEl.classList.add("right-panel")
-
+        const displayBottomEl = document.createElement("div")
+        const projectsBtn = document.createElement("button")
         const addBtn = document.createElement("button")
-        addBtn.classList.add("add-button")
-        addBtn.textContent = "ADD" //placeholder
+        const dialogEl = document.createElement("dialog")
 
-        rightPanelEl.appendChild(addBtn)
+        containerEl.classList.add("container")
+        displayTopEl.classList.add("display-top")
+        leftPanelEl.classList.add("left-panel")
+        rightPanelEl.classList.add("right-panel")
+        displayBottomEl.classList.add("display-bottom")
+
+        dialogEl.classList.add("edit-dialog")
+        projectsBtn.classList.add("projects-button")
+        addBtn.classList.add("add-button")
+
+        projectsBtn.textContent = "PROJECTS" //placeholder
+        addBtn.textContent = "ADD" //placeholder
 
         displayTopEl.appendChild(leftPanelEl)
         displayTopEl.appendChild(rightPanelEl)
-
-        const displayBottomEl = document.createElement("div")
-        displayBottomEl.classList.add("display-bottom")
-
-        const projectsBtn = document.createElement("button")
-        projectsBtn.classList.add("projects-button")
-        projectsBtn.textContent = "PROJECTS" //placeholder
-
-        displayBottomEl.appendChild(projectsBtn)
-
-        const containerEl = document.createElement("div")
-        containerEl.classList.add("container")
-
         containerEl.appendChild(displayTopEl)
         containerEl.appendChild(displayBottomEl)
+        containerEl.appendChild(projectsBtn)
+        containerEl.appendChild(addBtn)
+        containerEl.appendChild(dialogEl)
+
         bodyEl.appendChild(containerEl)
 
-        const dialogEl = document.createElement("dialog")
-        dialogEl.classList.add("edit-dialog")
         
     }
 
@@ -61,6 +58,14 @@ export const displayController = (function() {
 
     function renderTodos(projectsArray, projectIndex = 0) {
         const rightPanelEl = document.querySelector(".right-panel")
+        rightPanelEl.textContent = ""
+
+        currentProjectIndex = projectIndex
+        console.log(`current project is ${currentProjectIndex}`)
+
+        if (projectsArray[projectIndex].todos.length === 0) {
+            rightPanelEl.textContent = "no todos here yet, let's add some!"
+         } else {
 
         projectsArray[projectIndex].todos.forEach((todo, index) => {
             const todoEl = document.createElement("div")
@@ -76,9 +81,11 @@ export const displayController = (function() {
             todoDueDateEl.classList.add("todo-duedate")
 
             const editTodoBtnEl = document.createElement("button")
+            editTodoBtnEl.classList.add("edit-btn")
             editTodoBtnEl.textContent = "edit"
 
             const deleteTodoBtnEl = document.createElement("button")
+            deleteTodoBtnEl.classList.add("delete-btn")
             deleteTodoBtnEl.textContent = "delete"
 
             todoEl.appendChild(todoTitleEl)
@@ -86,13 +93,40 @@ export const displayController = (function() {
             todoEl.appendChild(editTodoBtnEl)
             todoEl.appendChild(deleteTodoBtnEl)
 
-
-
             rightPanelEl.appendChild(todoEl)
-       })
+        })
+        }
     }
 
-    return { createMainLayout, renderProjects, renderTodos }
+    function renderDialog(isProjectPanelVisible) {
+        if (isProjectPanelVisible) {
+            projectDialog()
+        } else {
+            todoDialog()
+        }
+    }
+
+    function projectDialog() {///
+        const formEl = document.createElement("form")
+
+    }
+
+    function todoDialog() {///
+
+    }
+
+
+    // function showHideProjectPanel() {
+        
+    // }
+
+    function getCurrentProjectIndex() {
+        console.log("beep")
+        return currentProjectIndex
+    }
+    
+
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, getCurrentProjectIndex }
 
 }())
 

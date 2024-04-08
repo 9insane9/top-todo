@@ -43,8 +43,8 @@ export default class StorageHandler {
     }
 
     static saveAndRebuildTo(array, projectConstructor, todoConstructor) {
-        this.save(array) //not sure the whole loop is needed, only save
-        this.load()
+        this.save(array) //not sure the whole loop is needed, only save because..
+        this.load()       //..only time we need to load is when app loads, otherwise we edit live data
         this.addMethods(projectConstructor, todoConstructor)
         array = this.projectsProcessed
         console.log("saved and rebuilt")
