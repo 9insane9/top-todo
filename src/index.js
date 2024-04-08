@@ -149,11 +149,21 @@ function app() {
                         displayController.renderTodos(ProjectHandler.projectsArray, currentProject)
                     break
                 }})})
-        }
+    }
 
-        attachProjectTileEvents()
-        attachTodoEvents()
-        attachProjectPanelBtnEvent()
+    function attachDialogEvent() {
+        const addBtn = document.querySelector(".add-button")
+        addBtn.addEventListener("click", () => {
+            displayController.renderDialog(isProjectPanelVisible)
+        })
+    }
+
+    // function dialogEvent() {}
+
+    attachProjectTileEvents()
+    attachTodoEvents()
+    attachProjectPanelBtnEvent()
+    attachDialogEvent()
     
     // return {listenProject, listenTodo}
 

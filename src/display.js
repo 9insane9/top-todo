@@ -9,30 +9,42 @@ export const displayController = (function() {
         const leftPanelEl = document.createElement("div")
         const rightPanelEl = document.createElement("div")
         const displayBottomEl = document.createElement("div")
-        const projectsBtn = document.createElement("button")
+        const projectsBtnEl = document.createElement("button")
         const addBtn = document.createElement("button")
         const dialogEl = document.createElement("dialog")
+        const dialogCloseBtnEl = document.createElement("button")
+        const dialogCloseBtnImageEl = document.createElement("image")
+        const formEl = document.createElement("form")
 
         containerEl.classList.add("container")
         displayTopEl.classList.add("display-top")
         leftPanelEl.classList.add("left-panel")
         rightPanelEl.classList.add("right-panel")
         displayBottomEl.classList.add("display-bottom")
+        dialogEl.classList.add("dialog")
+        dialogCloseBtnEl.classList.add("dialog-close-button")
+        dialogCloseBtnImageEl.classList.add("dialog-close-image")
+        formEl.classList.add("form")
 
         dialogEl.classList.add("edit-dialog")
-        projectsBtn.classList.add("projects-button")
+        projectsBtnEl.classList.add("projects-button")
         addBtn.classList.add("add-button")
 
-        projectsBtn.textContent = "PROJECTS" //placeholder
+        projectsBtnEl.textContent = "PROJECTS" //placeholder
         addBtn.textContent = "ADD" //placeholder
+        dialogCloseBtnEl.textContent = "CLOSE" //placeholder
 
         displayTopEl.appendChild(leftPanelEl)
         displayTopEl.appendChild(rightPanelEl)
+        dialogCloseBtnEl.appendChild(dialogCloseBtnImageEl)
+        dialogEl.appendChild(dialogCloseBtnEl)
+        dialogEl.appendChild(formEl)
         containerEl.appendChild(displayTopEl)
         containerEl.appendChild(displayBottomEl)
-        containerEl.appendChild(projectsBtn)
+        containerEl.appendChild(projectsBtnEl)
         containerEl.appendChild(addBtn)
         containerEl.appendChild(dialogEl)
+
 
         bodyEl.appendChild(containerEl)
 
@@ -98,7 +110,10 @@ export const displayController = (function() {
         }
     }
 
-    function renderDialog(isProjectPanelVisible) {
+    function renderDialog(isProjectPanelVisible = 0) {
+        const dialogEl = document.querySelector(".dialog")
+        dialogEl.showModal()
+
         if (isProjectPanelVisible) {
             projectDialog()
         } else {
@@ -107,12 +122,11 @@ export const displayController = (function() {
     }
 
     function projectDialog() {///
-        const formEl = document.createElement("form")
-
+        console.log("rendering new project dialog")
     }
 
     function todoDialog() {///
-
+        console.log("rendering new todo dialog")
     }
 
 
