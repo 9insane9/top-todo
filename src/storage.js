@@ -47,7 +47,7 @@ export default class StorageHandler {
         this.load()       //..only time we need to load is when app loads, otherwise we edit live data
         this.addMethods(projectConstructor, todoConstructor)
         array = this.projectsProcessed
-        console.log("saved and rebuilt")
+        // console.log("saved and rebuilt")
         console.log(this.projectsProcessed)
     }
 }

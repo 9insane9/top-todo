@@ -153,19 +153,27 @@ function app() {
 
     function attachDialogEvent() {
         const addBtn = document.querySelector(".add-button")
-        addBtn.addEventListener("click", () => {
+        addBtn.addEventListener("click", () => { 
             displayController.renderDialog(isProjectPanelVisible)
         })
     }
 
-    // function dialogEvent() {}
+    function attachCloseDialogEvent() {
+        const closeBtnEl = document.querySelector(".dialog-close-button")
+        const dialogEl = document.querySelector(".dialog")
+
+        closeBtnEl.addEventListener("click", () => {
+            console.log("closing dialog")
+            dialogEl.close()
+        })
+
+    }
 
     attachProjectTileEvents()
     attachTodoEvents()
     attachProjectPanelBtnEvent()
     attachDialogEvent()
-    
-    // return {listenProject, listenTodo}
+    attachCloseDialogEvent()
 
 }
 

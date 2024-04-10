@@ -15,6 +15,7 @@ export const displayController = (function() {
         const dialogCloseBtnEl = document.createElement("button")
         const dialogCloseBtnImageEl = document.createElement("image")
         const formEl = document.createElement("form")
+        const submitBtnEl = document.createElement("button")
 
         containerEl.classList.add("container")
         displayTopEl.classList.add("display-top")
@@ -25,14 +26,19 @@ export const displayController = (function() {
         dialogCloseBtnEl.classList.add("dialog-close-button")
         dialogCloseBtnImageEl.classList.add("dialog-close-image")
         formEl.classList.add("form")
+        submitBtnEl.classList.add("submit-button")
 
-        dialogEl.classList.add("edit-dialog")
         projectsBtnEl.classList.add("projects-button")
         addBtn.classList.add("add-button")
+
+        submitBtnEl.setAttribute("type", "submit")
+        submitBtnEl.setAttribute("formmethod", "dialog")
+        submitBtnEl.setAttribute("value", "submit")
 
         projectsBtnEl.textContent = "PROJECTS" //placeholder
         addBtn.textContent = "ADD" //placeholder
         dialogCloseBtnEl.textContent = "CLOSE" //placeholder
+        submitBtnEl.textContent = "SUBMIT" //same
 
         displayTopEl.appendChild(leftPanelEl)
         displayTopEl.appendChild(rightPanelEl)
@@ -44,7 +50,7 @@ export const displayController = (function() {
         containerEl.appendChild(projectsBtnEl)
         containerEl.appendChild(addBtn)
         containerEl.appendChild(dialogEl)
-
+        formEl.appendChild(submitBtnEl)
 
         bodyEl.appendChild(containerEl)
 
@@ -121,21 +127,21 @@ export const displayController = (function() {
         }
     }
 
-    function projectDialog() {///
+    function projectDialog() {
         console.log("rendering new project dialog")
+        
+        const formEl = document.querySelector(".form")
+        const nameInputEl = document.createElement("input")
+        nameInputEl.setAttribute("type", "text")
+        nameInputEl.setAttribute("placeholder", "My Project")
+        formEl.appendChild(nameInputEl)
     }
 
-    function todoDialog() {///
+    function todoDialog() {
         console.log("rendering new todo dialog")
     }
 
-
-    // function showHideProjectPanel() {
-        
-    // }
-
     function getCurrentProjectIndex() {
-        console.log("beep")
         return currentProjectIndex
     }
     
