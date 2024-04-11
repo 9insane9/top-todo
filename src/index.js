@@ -56,7 +56,7 @@ class Todo {
         this.isDone === false ? this.isDone = true : this.isDone = false;
     }
 
-    togglePriority() {
+    togglePriority() {//make it binary
         switch(this.priority) {
             case "Low":
                 this.priority = "Normal"
@@ -105,7 +105,7 @@ ProjectHandler.projectsArray[0].todos[0].toggleisDone()
 displayController.renderProjects(ProjectHandler.projectsArray)
 
 function app() {
-    let isProjectPanelVisible = 1
+    let isProjectPanelVisible = true
 
     function attachProjectPanelBtnEvent() {
         const projectPanelBtn = document.querySelector(".projects-button")
@@ -115,7 +115,7 @@ function app() {
     function projectPanelEvent() {
         const leftPanelEl = document.querySelector(".left-panel")
         leftPanelEl.classList.toggle("invisible")
-        isProjectPanelVisible === 1 ? isProjectPanelVisible = 0 : isProjectPanelVisible = 1
+        isProjectPanelVisible ? isProjectPanelVisible = false : isProjectPanelVisible = true;
         console.log(`panel visibility ${isProjectPanelVisible}`)
 
     }

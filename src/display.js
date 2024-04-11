@@ -15,6 +15,7 @@ export const displayController = (function() {
         const dialogCloseBtnEl = document.createElement("button")
         const dialogCloseBtnImageEl = document.createElement("image")
         const formEl = document.createElement("form")
+        const formContentEl = document.createElement("div")
         const submitBtnEl = document.createElement("button")
 
         containerEl.classList.add("container")
@@ -26,6 +27,7 @@ export const displayController = (function() {
         dialogCloseBtnEl.classList.add("dialog-close-button")
         dialogCloseBtnImageEl.classList.add("dialog-close-image")
         formEl.classList.add("form")
+        formContentEl.classList.add("form-content")
         submitBtnEl.classList.add("submit-button")
 
         projectsBtnEl.classList.add("projects-button")
@@ -50,6 +52,7 @@ export const displayController = (function() {
         containerEl.appendChild(projectsBtnEl)
         containerEl.appendChild(addBtn)
         containerEl.appendChild(dialogEl)
+        formEl.appendChild(formContentEl)
         formEl.appendChild(submitBtnEl)
 
         bodyEl.appendChild(containerEl)
@@ -120,25 +123,59 @@ export const displayController = (function() {
         const dialogEl = document.querySelector(".dialog")
         dialogEl.showModal()
 
+        const formContentEl = document.querySelector(".form-content")
+        formContentEl.textContent = ""
+
         if (isProjectPanelVisible) {
-            projectDialog()
+            formContentEl.appendChild(projectDialog())
         } else {
-            todoDialog()
+            formContentEl.appendChild(todoDialog())
         }
     }
 
     function projectDialog() {
         console.log("rendering new project dialog")
-        
-        const formEl = document.querySelector(".form")
+
         const nameInputEl = document.createElement("input")
         nameInputEl.setAttribute("type", "text")
         nameInputEl.setAttribute("placeholder", "My Project")
-        formEl.appendChild(nameInputEl)
+
+        return nameInputEl
     }
 
-    function todoDialog() {
+    function todoDialog() {//yeeeeeehaw
         console.log("rendering new todo dialog")
+        //problem was here somewhere
+        const dialogTodoContainerEl = document.createElement("div")
+        const todoTitleInputEl = document.createElement("input")
+        const todoDescriptionInputEl = document.createElement("input")
+        const todoDueDateInputEl = document.createElement("input")
+        const todoNotesEl = document.createElement("textarea")
+        const todoPriorityEl = document.createElement("button")
+
+        // dialogTodoContainerEl.classList("dialog-todo-container")
+
+        todoTitleInputEl.classList.add("form-input", "title")
+        todoDescriptionInputEl.classList.add("form-input", "description")
+        todoDueDateInputEl.classList.add("form-input", "date")
+        todoNotesEl.classList.add("form-input", "notes")
+        todoPriorityEl.classList.add("form-input", "priority")
+
+        todoTitleInputEl.setAttribute("type", "text")
+        todoDescriptionInputEl.setAttribute("type", "text")
+        todoDueDateInputEl.setAttribute("type", "date")
+
+        todoTitleInputEl.setAttribute("placeholder", "play gaem")
+        todoDescriptionInputEl.setAttribute("placeholder", "yeyeye gaem")
+        todoNotesEl.setAttribute("placeholder", "Lorem ipsum yadda yadda yadda yadda yadda yadda yadda")
+
+        dialogTodoContainerEl.appendChild(todoTitleInputEl)
+        dialogTodoContainerEl.appendChild(todoDescriptionInputEl)
+        dialogTodoContainerEl.appendChild(todoDueDateInputEl)
+        dialogTodoContainerEl.appendChild(todoNotesEl)
+        // dialogTodoContainerEl.appendChild(todoPriorityEl)
+
+        return dialogTodoContainerEl
     }
 
     function getCurrentProjectIndex() {
