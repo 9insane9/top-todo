@@ -18,3 +18,7 @@
 .invisible {
     display: none;
 }
+
+.form-content * {
+    display: block;
+}

@@ -1,23 +1,31 @@
 export const displayController = (function() {
     let currentProjectIndex = 0
+    const bodyEl = document.querySelector("body")
+
+    const containerEl = document.createElement("div")
+    const displayTopEl = document.createElement("div")
+    const leftPanelEl = document.createElement("div")
+    const rightPanelEl = document.createElement("div")
+    const displayBottomEl = document.createElement("div")
+    const projectsBtnEl = document.createElement("button")
+    const addBtn = document.createElement("button")
+    const dialogEl = document.createElement("dialog")
+    const dialogCloseBtnEl = document.createElement("button")
+    const dialogCloseBtnImageEl = document.createElement("image")
+    const formEl = document.createElement("form")
+    const formContentEl = document.createElement("div")
+    const submitBtnEl = document.createElement("button")
+
+    const todoDialogContainerEl = document.createElement("div")
+    const todoTitleInputEl = document.createElement("input")
+    const todoDescriptionInputEl = document.createElement("input")
+    const todoDueDateInputEl = document.createElement("input")
+    const todoNotesInputEl = document.createElement("textarea")
+    const todoPriorityEl = document.createElement("button")
+
+    attachTogglePriorityButtonDisplayEvent()
 
     function createMainLayout() {
-        const bodyEl = document.querySelector("body")
-
-        const containerEl = document.createElement("div")
-        const displayTopEl = document.createElement("div")
-        const leftPanelEl = document.createElement("div")
-        const rightPanelEl = document.createElement("div")
-        const displayBottomEl = document.createElement("div")
-        const projectsBtnEl = document.createElement("button")
-        const addBtn = document.createElement("button")
-        const dialogEl = document.createElement("dialog")
-        const dialogCloseBtnEl = document.createElement("button")
-        const dialogCloseBtnImageEl = document.createElement("image")
-        const formEl = document.createElement("form")
-        const formContentEl = document.createElement("div")
-        const submitBtnEl = document.createElement("button")
-
         containerEl.classList.add("container")
         displayTopEl.classList.add("display-top")
         leftPanelEl.classList.add("left-panel")
@@ -37,10 +45,10 @@ export const displayController = (function() {
         submitBtnEl.setAttribute("formmethod", "dialog")
         submitBtnEl.setAttribute("value", "submit")
 
-        projectsBtnEl.textContent = "PROJECTS" //placeholder
-        addBtn.textContent = "ADD" //placeholder
-        dialogCloseBtnEl.textContent = "CLOSE" //placeholder
-        submitBtnEl.textContent = "SUBMIT" //same
+        projectsBtnEl.textContent = "PROJECTS"
+        addBtn.textContent = "ADD"
+        dialogCloseBtnEl.textContent = "CLOSE"
+        submitBtnEl.textContent = "SUBMIT"
 
         displayTopEl.appendChild(leftPanelEl)
         displayTopEl.appendChild(rightPanelEl)
@@ -55,15 +63,11 @@ export const displayController = (function() {
         formEl.appendChild(formContentEl)
         formEl.appendChild(submitBtnEl)
 
-        bodyEl.appendChild(containerEl)
-
-        
+        bodyEl.appendChild(containerEl)        
     }
 
-    function renderProjects(projectsArray) {
-        const rightPanelEl = document.querySelector(".right-panel")
-        const leftPanelEl = document.querySelector(".left-panel")
 
+    function renderProjects(projectsArray) {
         projectsArray.forEach((project, index) => {
             const projectEl = document.createElement("button")
 
@@ -77,15 +81,15 @@ export const displayController = (function() {
         renderTodos(projectsArray)
     }
 
+
     function renderTodos(projectsArray, projectIndex = 0) {
-        const rightPanelEl = document.querySelector(".right-panel")
         rightPanelEl.textContent = ""
 
         currentProjectIndex = projectIndex
-        console.log(`current project is ${currentProjectIndex}`)
+        console.log(`currentProjectIndex: ${currentProjectIndex}`)
 
         if (projectsArray[projectIndex].todos.length === 0) {
-            rightPanelEl.textContent = "no todos here yet, let's add some!"
+            rightPanelEl.textContent = "First task: make todo list!"
          } else {
 
         projectsArray[projectIndex].todos.forEach((todo, index) => {
@@ -119,8 +123,8 @@ export const displayController = (function() {
         }
     }
 
+
     function renderDialog(isProjectPanelVisible = 0) {
-        const dialogEl = document.querySelector(".dialog")
         dialogEl.showModal()
 
         const formContentEl = document.querySelector(".form-content")
@@ -133,6 +137,7 @@ export const displayController = (function() {
         }
     }
 
+
     function projectDialog() {
         console.log("rendering new project dialog")
 
@@ -143,47 +148,73 @@ export const displayController = (function() {
         return nameInputEl
     }
 
-    function todoDialog() {//yeeeeeehaw
+
+    function todoDialog() {
         console.log("rendering new todo dialog")
-        //problem was here somewhere
-        const dialogTodoContainerEl = document.createElement("div")
-        const todoTitleInputEl = document.createElement("input")
-        const todoDescriptionInputEl = document.createElement("input")
-        const todoDueDateInputEl = document.createElement("input")
-        const todoNotesEl = document.createElement("textarea")
-        const todoPriorityEl = document.createElement("button")
-
-        // dialogTodoContainerEl.classList("dialog-todo-container")
-
         todoTitleInputEl.classList.add("form-input", "title")
         todoDescriptionInputEl.classList.add("form-input", "description")
         todoDueDateInputEl.classList.add("form-input", "date")
-        todoNotesEl.classList.add("form-input", "notes")
+        todoNotesInputEl.classList.add("form-input", "notes")
         todoPriorityEl.classList.add("form-input", "priority")
 
         todoTitleInputEl.setAttribute("type", "text")
         todoDescriptionInputEl.setAttribute("type", "text")
         todoDueDateInputEl.setAttribute("type", "date")
+        todoPriorityEl.textContent = "Normal"
 
         todoTitleInputEl.setAttribute("placeholder", "play gaem")
-        todoDescriptionInputEl.setAttribute("placeholder", "yeyeye gaem")
-        todoNotesEl.setAttribute("placeholder", "Lorem ipsum yadda yadda yadda yadda yadda yadda yadda")
+        todoDescriptionInputEl.setAttribute("placeholder", "description of gaem")
+        todoNotesInputEl.setAttribute("placeholder", "Lorem ipsum yadda yadda yadda yadda yadda yadda yadda")
 
-        dialogTodoContainerEl.appendChild(todoTitleInputEl)
-        dialogTodoContainerEl.appendChild(todoDescriptionInputEl)
-        dialogTodoContainerEl.appendChild(todoDueDateInputEl)
-        dialogTodoContainerEl.appendChild(todoNotesEl)
-        // dialogTodoContainerEl.appendChild(todoPriorityEl)
+        todoDialogContainerEl.appendChild(todoTitleInputEl)
+        todoDialogContainerEl.appendChild(todoDescriptionInputEl)
+        todoDialogContainerEl.appendChild(todoDueDateInputEl)
+        todoDialogContainerEl.appendChild(todoNotesInputEl)
+        todoDialogContainerEl.appendChild(todoPriorityEl)
 
-        return dialogTodoContainerEl
+        return todoDialogContainerEl
     }
+
 
     function getCurrentProjectIndex() {
         return currentProjectIndex
     }
-    
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, getCurrentProjectIndex }
+    function getTodoFormValues() {
+        const obj = {
+            title: todoTitleInputEl.value,
+            description: todoDescriptionInputEl.value,
+            dueDate: todoDueDateInputEl.value,
+            notes: todoNotesInputEl.value,
+            isHighPriority: getFormTodoPriority(),
+            isDone: false
+        }
+
+        console.log(obj)
+        return obj
+    }
+
+    function attachTogglePriorityButtonDisplayEvent() {
+        todoPriorityEl.addEventListener("click", (e) => {
+            todoPriorityEl.classList.toggle("high-priority")
+
+            todoPriorityEl.textContent === "Normal" ? todoPriorityEl.textContent = "High" : todoPriorityEl.textContent = "Normal"
+
+            if (todoPriorityEl.textContent === "Normal") {
+                todoPriorityEl.classList.remove("high-priority")
+            } else if (todoPriorityEl.textContent === "High") {
+                todoPriorityEl.classList.add("high-priority")
+            }
+            e.preventDefault()
+        })
+    }
+
+    function getFormTodoPriority(){
+        console.log([...todoPriorityEl.classList].includes("high-priority"))
+        return [...todoPriorityEl.classList].includes("high-priority")
+    }
+
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, getCurrentProjectIndex, getTodoFormValues }
 
 }())
 

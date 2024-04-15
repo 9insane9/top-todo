@@ -10,8 +10,8 @@ class ProjectHandler {
         this.projectsArray.push(new Project(name))
     }
 
-    static addTodo(projectIndex = 0) {
-        this.projectsArray[projectIndex].todos.push(new Todo())
+    static addTodo(currentProjectIndex = 0, obj) {
+        this.projectsArray[currentProjectIndex].todos.push(new Todo(obj))
     }
 
     static deleteProject(projectIndex) {
@@ -31,23 +31,17 @@ class Project {
 }
 
 class Todo {
-    constructor(title = "Todo title",
-                description = "Todo description",
-                dueDate = "Todo dueDate",
-                notes = "Todo notes",
-                priority = "Low",
-                isDone = false
-                ) {
-        this.title = title
-        this.description = description
-        this.dueDate = dueDate
-        this.notes = notes
-        this.priority = priority
-        this.isDone = isDone
+    constructor(obj) {
+        this.title = obj.title
+        this.description = obj.description
+        this.dueDate = obj.dueDate
+        this.notes = obj.notes
+        this.isHighPriority = obj.isHighPriority
+        this.isDone = obj.isDone
     }
 
     editProperty(property, value) {
-        if (property !== "priority" && property !== "isDone") {
+        if (property !== "isHighPriority" && property !== "isDone") {
             this[property] = value
         }
     }
@@ -56,41 +50,40 @@ class Todo {
         this.isDone === false ? this.isDone = true : this.isDone = false;
     }
 
-    togglePriority() {//make it binary
-        switch(this.priority) {
-            case "Low":
-                this.priority = "Normal"
-                break
-            case "Normal":
-                this.priority = "High"
-                break
-            case "High":
-                this.priority = "Low"
-                break
-        }
+    togglePriority() {
+        this.isHighPriority === false ? this.isHighPriority = false : this.isHighPriority = true;
     }
 }
 
 class DateHandler {
-    formatDate(date) {
+    static formatDate(date) {
         return format(date, "do MMMM yyyy")
     }
 
-    static tomorrow() {
+    static getTomorrow() {
         const today = new Date()
         const tomorrow = addDays(today, 1)
-        const formatted = format(tomorrow, "do MMMM yyyy")
-        console.log(formatted)
-        return formatted
+        const formattedTomorrow = this.formatDate(tomorrow)
+        console.log(formattedTomorrow)
+        return formattedTomorrow
     }
+}
+
+const testObj = {
+    title: "todoTitleInputEl.value",
+    description: "todoDescriptionInputEl.value",
+    dueDate: "todoDueDateInputEl.value",
+    notes: "todoNotesInputEl.value",
+    isHighPriority: false,
+    isDone: false
 }
 
 displayController.createMainLayout()
 
 ProjectHandler.addProject()
 ProjectHandler.addProject("testproject2")
-ProjectHandler.addTodo(0)
-ProjectHandler.addTodo(1)
+ProjectHandler.addTodo(0, testObj)
+ProjectHandler.addTodo(1, testObj)
 ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
 ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
 ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
@@ -152,21 +145,33 @@ function app() {
     }
 
     function attachDialogEvent() {
-        const addBtn = document.querySelector(".add-button")
-        addBtn.addEventListener("click", () => { 
+        const addBtnEl = document.querySelector(".add-button")
+        addBtnEl.addEventListener("click", () => { 
             displayController.renderDialog(isProjectPanelVisible)
         })
     }
 
     function attachCloseDialogEvent() {
-        const closeBtnEl = document.querySelector(".dialog-close-button")
+        const closeBtnEl = document.querySelector(".dialog-close-button")// export these also?
         const dialogEl = document.querySelector(".dialog")
 
         closeBtnEl.addEventListener("click", () => {
             console.log("closing dialog")
             dialogEl.close()
         })
+    }
 
+    function attachSubmitEvent() {
+        const submitBtnEl = document.querySelector(".submit-button")
+
+        submitBtnEl.addEventListener("click", () => {
+            const currentProject = displayController.getCurrentProjectIndex()
+            const formValues = displayController.getTodoFormValues()
+            console.log(formValues)
+            
+            ProjectHandler.addTodo(currentProject, formValues)
+            console.log(ProjectHandler.projectsArray)
+        })
     }
 
     attachProjectTileEvents()
@@ -174,6 +179,7 @@ function app() {
     attachProjectPanelBtnEvent()
     attachDialogEvent()
     attachCloseDialogEvent()
+    attachSubmitEvent()
 
 }
 
