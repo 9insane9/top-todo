@@ -28,13 +28,17 @@ class Project {
         this.name = name
         this.todos = []
     }
+
+    editName(name) {
+        this.name = name
+    }
 }
 
 class Todo {
     constructor(obj) {
         this.title = obj.title
         this.description = obj.description
-        this.dueDate = obj.dueDate
+        this.dueDate = DateHandler.formatDate(obj.dueDate)
         this.notes = obj.notes
         this.isHighPriority = obj.isHighPriority
         this.isDone = obj.isDone
@@ -57,10 +61,14 @@ class Todo {
 
 class DateHandler {
     static formatDate(date) {
-        return format(date, "do MMMM yyyy")
+        if (!Date.parse(date)) {
+            return "no date"
+        } else {
+            return format(date, "do MMMM yyyy")
+        }
     }
 
-    static getTomorrow() {
+    static getFormattedTomorrow() {
         const today = new Date()
         const tomorrow = addDays(today, 1)
         const formattedTomorrow = this.formatDate(tomorrow)
@@ -78,27 +86,20 @@ const testObj = {
     isDone: false
 }
 
-displayController.createMainLayout()
-
-ProjectHandler.addProject()
-ProjectHandler.addProject("testproject2")
-ProjectHandler.addTodo(0, testObj)
-ProjectHandler.addTodo(1, testObj)
-ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
-ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
-ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
-ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
-ProjectHandler.projectsArray[0].todos[0].togglePriority()
-ProjectHandler.projectsArray[0].todos[0].togglePriority()
-
-StorageHandler.saveAndRebuildTo(ProjectHandler.projectsArray, Project, Todo)
-
-ProjectHandler.projectsArray[0].todos[0].toggleisDone()
-
-displayController.renderProjects(ProjectHandler.projectsArray)
+testFunction()
 
 function app() {
     let isProjectPanelVisible = true
+
+    displayController.createMainLayout()
+    displayController.renderProjects(ProjectHandler.projectsArray)
+
+    attachProjectTileEvents()
+    attachTodoEvents()
+    attachProjectPanelBtnEvent()
+    attachDialogEvent()
+    attachCloseDialogEvent()
+    attachSubmitEvent()
 
     function attachProjectPanelBtnEvent() {
         const projectPanelBtn = document.querySelector(".projects-button")
@@ -176,13 +177,27 @@ function app() {
             //data-index in html starts over from 0 when a project is deleted
         })
     }
-
-    attachProjectTileEvents()
-    attachTodoEvents()
-    attachProjectPanelBtnEvent()
-    attachDialogEvent()
-    attachCloseDialogEvent()
-    attachSubmitEvent()
 }
 
 app()
+
+function testFunction() {
+    // StorageHandler.saveFrom(ProjectHandler.projectsArray)
+    // StorageHandler.loadTo(ProjectHandler.projectsArray, Project, Todo)
+
+    ProjectHandler.addProject()
+    ProjectHandler.addProject("testproject2")
+    ProjectHandler.addTodo(0, testObj)
+    ProjectHandler.addTodo(1, testObj)
+    ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
+    ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
+    ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
+    ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
+    ProjectHandler.projectsArray[0].todos[0].togglePriority()
+    ProjectHandler.projectsArray[0].todos[0].togglePriority()
+    // StorageHandler.saveFrom(ProjectHandler.projectsArray)
+    ProjectHandler.projectsArray[0].todos[0].toggleisDone()
+    ProjectHandler.projectsArray[0].editName("newName")
+
+    console.log(displayController.bodyEl)
+}

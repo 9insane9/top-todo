@@ -15,7 +15,6 @@ export const displayController = (function() {
     const formEl = document.createElement("form")
     const formContentEl = document.createElement("div")
     const submitBtnEl = document.createElement("button")
-
     const todoDialogContainerEl = document.createElement("div")
     const todoTitleInputEl = document.createElement("input")
     const todoDescriptionInputEl = document.createElement("input")
@@ -37,7 +36,7 @@ export const displayController = (function() {
         formEl.classList.add("form")
         formContentEl.classList.add("form-content")
         submitBtnEl.classList.add("submit-button")
-
+        todoDialogContainerEl.classList.add("todo-dialog-container")
         projectsBtnEl.classList.add("projects-button")
         addBtn.classList.add("add-button")
 
@@ -62,7 +61,6 @@ export const displayController = (function() {
         containerEl.appendChild(dialogEl)
         formEl.appendChild(formContentEl)
         formEl.appendChild(submitBtnEl)
-
         bodyEl.appendChild(containerEl)        
     }
 
@@ -75,7 +73,6 @@ export const displayController = (function() {
             projectEl.classList.add("project-tile")
             projectEl.setAttribute("data-index", index)
             projectEl.textContent = project.name
-
             leftPanelEl.appendChild(projectEl)
         })
 
@@ -95,32 +92,30 @@ export const displayController = (function() {
 
         projectsArray[projectIndex].todos.forEach((todo, index) => {
             const todoEl = document.createElement("div")
-            todoEl.classList.add("todo")
-            todoEl.setAttribute("data-index", index)
-
             const todoTitleEl = document.createElement("h3")
-            todoTitleEl.textContent = todo.title
-            todoTitleEl.classList.add("todo-title")
-
             const todoDueDateEl = document.createElement("h3")
-            todoDueDateEl.textContent = todo.dueDate
-            todoDueDateEl.classList.add("todo-duedate")
-
             const viewTodoBtnEl = document.createElement("button")
-            viewTodoBtnEl.classList.add("view-btn")
-            viewTodoBtnEl.setAttribute("data-index", index)
-            viewTodoBtnEl.textContent = "view"
-
             const deleteTodoBtnEl = document.createElement("button")
-            deleteTodoBtnEl.classList.add("delete-btn")
+
+            todoEl.setAttribute("data-index", index)
+            viewTodoBtnEl.setAttribute("data-index", index)
             deleteTodoBtnEl.setAttribute("data-index", index)
+
+            todoEl.classList.add("todo")
+            todoTitleEl.classList.add("todo-title")
+            todoDueDateEl.classList.add("todo-duedate")
+            viewTodoBtnEl.classList.add("view-btn")
+            deleteTodoBtnEl.classList.add("delete-btn")
+
+            todoTitleEl.textContent = todo.title
+            todoDueDateEl.textContent = todo.dueDate
+            viewTodoBtnEl.textContent = "view"
             deleteTodoBtnEl.textContent = "delete"
 
             todoEl.appendChild(todoTitleEl)
             todoEl.appendChild(todoDueDateEl)
             todoEl.appendChild(viewTodoBtnEl)
             todoEl.appendChild(deleteTodoBtnEl)
-
             rightPanelEl.appendChild(todoEl)
         })
         }
@@ -142,9 +137,10 @@ export const displayController = (function() {
 
 
     function projectDialog() {
-        console.log("rendering new project dialog")
+        console.log("rendering project dialog")
 
         const nameInputEl = document.createElement("input")
+
         nameInputEl.setAttribute("type", "text")
         nameInputEl.setAttribute("placeholder", "My Project")
 
@@ -153,7 +149,8 @@ export const displayController = (function() {
 
 
     function todoDialog() {
-        console.log("rendering new todo dialog")
+        console.log("rendering todo dialog")
+
         todoTitleInputEl.classList.add("form-input", "title")
         todoDescriptionInputEl.classList.add("form-input", "description")
         todoDueDateInputEl.classList.add("form-input", "date")
@@ -209,6 +206,7 @@ export const displayController = (function() {
             } else if (todoPriorityEl.textContent === "High") {
                 todoPriorityEl.classList.add("high-priority")
             }
+
             e.preventDefault()
         })
     }
@@ -243,11 +241,10 @@ export const displayController = (function() {
         todoViewContainer.appendChild(todoNotesViewEl)
         todoViewContainer.appendChild(todoIsHighPriorityViewEl)
         todoViewContainer.appendChild(todoIsDoneViewEl)        
-
         formContentEl.appendChild(todoViewContainer)
     }
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues }
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, bodyEl }
 
 }())
 

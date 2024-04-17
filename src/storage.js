@@ -2,14 +2,28 @@ export default class StorageHandler {
     static projectsParsed = []
     static projectsProcessed = []
 
-    static save(array) {
+    static saveFrom(array) {
+        console.log("saving to local storage")
+
         const projectsJSON = JSON.stringify(array)
         localStorage.setItem("projectsJSON", projectsJSON)
     }
 
-    static load(reference = "projectsJSON") {
-        const text = localStorage.getItem(reference)
-        this.projectsParsed = JSON.parse(text)
+    static loadJSON(ref = "projectsJSON") {
+        if (!localStorage.getItem(ref)) {
+            localStorage.setItem("projectsJSON", "")
+        } else {
+            const text = localStorage.getItem(ref)
+            this.projectsParsed = JSON.parse(text)
+        }
+    }
+
+    static loadTo(array, projectConstructor, todoConstructor) {
+        console.log("loading stuff to array")
+
+        this.loadJSON()
+        this.addMethods(projectConstructor, todoConstructor)
+        array = this.projectsProcessed
     }
 
     static addMethods(projectConstructor, todoConstructor) {
@@ -34,18 +48,5 @@ export default class StorageHandler {
             output.push(newProject)
         })
         this.projectsProcessed = output;
-    }
-
-    static rebuildTo(array, projectConstructor, todoConstructor) {
-        this.load()
-        this.addMethods(projectConstructor, todoConstructor)
-        array = this.projectsProcessed
-    }
-
-    static saveAndRebuildTo(array, projectConstructor, todoConstructor) {
-        this.save(array) //not sure the whole loop is needed, only save because..
-        this.load()       //..only time we need to load is when app loads, otherwise we edit live data
-        this.addMethods(projectConstructor, todoConstructor)
-        array = this.projectsProcessed
     }
 }
