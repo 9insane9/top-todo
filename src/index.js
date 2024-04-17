@@ -70,10 +70,10 @@ class DateHandler {
 }
 
 const testObj = {
-    title: "todoTitleInputEl.value",
-    description: "todoDescriptionInputEl.value",
-    dueDate: "todoDueDateInputEl.value",
-    notes: "todoNotesInputEl.value",
+    title: "test title",
+    description: "test description",
+    dueDate: "test duedate",
+    notes: "test notes",
     isHighPriority: false,
     isDone: false
 }
@@ -130,14 +130,17 @@ function app() {
 
         todoElList.forEach(element => {
             element.addEventListener("click", (event) => {
+                const currentProject = displayController.getCurrentProjectIndex()
+                const currentTodo = event.target.getAttribute("data-index")
+
                 switch (event.target.getAttribute("class")) {
-                    case "edit-btn":
-                        console.log("opening edit dialog")
+                    case "view-btn":
+                        const dialogEl = document.querySelector("dialog")
+                        dialogEl.showModal()
+                        displayController.renderViewTodo(ProjectHandler.projectsArray, currentProject, currentTodo)
+
                         break
                     case "delete-btn":
-                        const currentProject = displayController.getCurrentProjectIndex()
-                        const currentTodo = event.target.getAttribute("data-index")
-
                         ProjectHandler.deleteTodo(currentProject, currentTodo)
                         displayController.renderTodos(ProjectHandler.projectsArray, currentProject)
                     break
@@ -167,10 +170,10 @@ function app() {
         submitBtnEl.addEventListener("click", () => {
             const currentProject = displayController.getCurrentProjectIndex()
             const formValues = displayController.getTodoFormValues()
-            console.log(formValues)
             
             ProjectHandler.addTodo(currentProject, formValues)
-            console.log(ProjectHandler.projectsArray)
+            //render again here
+            //data-index in html starts over from 0 when a project is deleted
         })
     }
 
@@ -180,7 +183,6 @@ function app() {
     attachDialogEvent()
     attachCloseDialogEvent()
     attachSubmitEvent()
-
 }
 
 app()

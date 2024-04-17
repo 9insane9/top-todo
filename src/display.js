@@ -68,6 +68,7 @@ export const displayController = (function() {
 
 
     function renderProjects(projectsArray) {
+        leftPanelEl.textContent = ""
         projectsArray.forEach((project, index) => {
             const projectEl = document.createElement("button")
 
@@ -105,17 +106,19 @@ export const displayController = (function() {
             todoDueDateEl.textContent = todo.dueDate
             todoDueDateEl.classList.add("todo-duedate")
 
-            const editTodoBtnEl = document.createElement("button")
-            editTodoBtnEl.classList.add("edit-btn")
-            editTodoBtnEl.textContent = "edit"
+            const viewTodoBtnEl = document.createElement("button")
+            viewTodoBtnEl.classList.add("view-btn")
+            viewTodoBtnEl.setAttribute("data-index", index)
+            viewTodoBtnEl.textContent = "view"
 
             const deleteTodoBtnEl = document.createElement("button")
             deleteTodoBtnEl.classList.add("delete-btn")
+            deleteTodoBtnEl.setAttribute("data-index", index)
             deleteTodoBtnEl.textContent = "delete"
 
             todoEl.appendChild(todoTitleEl)
             todoEl.appendChild(todoDueDateEl)
-            todoEl.appendChild(editTodoBtnEl)
+            todoEl.appendChild(viewTodoBtnEl)
             todoEl.appendChild(deleteTodoBtnEl)
 
             rightPanelEl.appendChild(todoEl)
@@ -160,7 +163,9 @@ export const displayController = (function() {
         todoTitleInputEl.setAttribute("type", "text")
         todoDescriptionInputEl.setAttribute("type", "text")
         todoDueDateInputEl.setAttribute("type", "date")
+
         todoPriorityEl.textContent = "Normal"
+        todoPriorityEl.classList.remove("high-priority")
 
         todoTitleInputEl.setAttribute("placeholder", "play gaem")
         todoDescriptionInputEl.setAttribute("placeholder", "description of gaem")
@@ -196,7 +201,6 @@ export const displayController = (function() {
 
     function attachTogglePriorityButtonDisplayEvent() {
         todoPriorityEl.addEventListener("click", (e) => {
-            todoPriorityEl.classList.toggle("high-priority")
 
             todoPriorityEl.textContent === "Normal" ? todoPriorityEl.textContent = "High" : todoPriorityEl.textContent = "Normal"
 
@@ -210,11 +214,40 @@ export const displayController = (function() {
     }
 
     function getFormTodoPriority(){
-        console.log([...todoPriorityEl.classList].includes("high-priority"))
         return [...todoPriorityEl.classList].includes("high-priority")
     }
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, getCurrentProjectIndex, getTodoFormValues }
+    function renderViewTodo(projectsArray, currentProjectIndex, todoIndex) {
+        formContentEl.textContent = ""
+
+        const todoViewContainer = document.createElement("div")
+        todoViewContainer.classList.add("todo-view-container")
+
+        const todoTitleViewEl = document.createElement("p")
+        const todoDescriptionViewEl = document.createElement("p")
+        const todoDueDateViewEl = document.createElement("p")
+        const todoNotesViewEl = document.createElement("p")
+        const todoIsHighPriorityViewEl = document.createElement("p")
+        const todoIsDoneViewEl = document.createElement("p")
+       
+        todoTitleViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].title
+        todoDescriptionViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].description
+        todoDueDateViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].dueDate
+        todoNotesViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].notes
+        todoIsHighPriorityViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
+        todoIsDoneViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isDone
+
+        todoViewContainer.appendChild(todoTitleViewEl)
+        todoViewContainer.appendChild(todoDescriptionViewEl)
+        todoViewContainer.appendChild(todoDueDateViewEl)
+        todoViewContainer.appendChild(todoNotesViewEl)
+        todoViewContainer.appendChild(todoIsHighPriorityViewEl)
+        todoViewContainer.appendChild(todoIsDoneViewEl)        
+
+        formContentEl.appendChild(todoViewContainer)
+    }
+
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues }
 
 }())
 
