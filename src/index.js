@@ -1,5 +1,4 @@
 import StorageHandler from './storage.js';
-import { format, addDays } from 'date-fns';
 import { displayController } from './display.js';
 import css from './style.css';
 
@@ -38,7 +37,7 @@ class Todo {
     constructor(obj) {
         this.title = obj.title
         this.description = obj.description
-        this.dueDate = DateHandler.formatDate(obj.dueDate)
+        this.dueDate = obj.dueDate
         this.notes = obj.notes
         this.isHighPriority = obj.isHighPriority
         this.isDone = obj.isDone
@@ -56,24 +55,6 @@ class Todo {
 
     togglePriority() {
         this.isHighPriority === false ? this.isHighPriority = false : this.isHighPriority = true;
-    }
-}
-
-class DateHandler {
-    static formatDate(date) {
-        if (!Date.parse(date)) {
-            return "no date"
-        } else {
-            return format(date, "do MMMM yyyy")
-        }
-    }
-
-    static getFormattedTomorrow() {
-        const today = new Date()
-        const tomorrow = addDays(today, 1)
-        const formattedTomorrow = this.formatDate(tomorrow)
-        console.log(formattedTomorrow)
-        return formattedTomorrow
     }
 }
 
@@ -99,7 +80,7 @@ function app() {
     attachProjectPanelBtnEvent()
     attachDialogEvent()
     attachCloseDialogEvent()
-    attachSubmitEvent()
+    attachSubmitEvents()
 
     function attachProjectPanelBtnEvent() {
         const projectPanelBtn = document.querySelector(".projects-button")
@@ -139,12 +120,13 @@ function app() {
                         const dialogEl = document.querySelector("dialog")
                         dialogEl.showModal()
                         displayController.renderViewTodo(ProjectHandler.projectsArray, currentProject, currentTodo)
-
+                        attachEditBtnEvent()
+                        console.log(ProjectHandler.projectsArray)
                         break
                     case "delete-btn":
                         ProjectHandler.deleteTodo(currentProject, currentTodo)
                         displayController.renderTodos(ProjectHandler.projectsArray, currentProject)
-                    break
+                        break
                 }})})
     }
 
@@ -165,7 +147,7 @@ function app() {
         })
     }
 
-    function attachSubmitEvent() {
+    function attachSubmitEvents() {
         const submitBtnEl = document.querySelector(".submit-button")
 
         submitBtnEl.addEventListener("click", () => {
@@ -174,7 +156,18 @@ function app() {
             
             ProjectHandler.addTodo(currentProject, formValues)
             //render again here
-            //data-index in html starts over from 0 when a project is deleted
+        })
+    }
+
+    function attachEditBtnEvent() {
+        const editBtnEl = document.querySelector(".edit-btn")
+        console.log(editBtnEl)
+
+        editBtnEl.addEventListener("click", (e) => {
+            const currentProjectIndex = displayController.getCurrentProjectIndex()
+            const todoIndex = e.target.getAttribute("data-index")
+
+            displayController.editTodoForm(ProjectHandler.projectsArray, currentProjectIndex, todoIndex)
         })
     }
 }
@@ -182,8 +175,7 @@ function app() {
 app()
 
 function testFunction() {
-    // StorageHandler.saveFrom(ProjectHandler.projectsArray)
-    // StorageHandler.loadTo(ProjectHandler.projectsArray, Project, Todo)
+    StorageHandler.saveFrom(ProjectHandler.projectsArray)
 
     ProjectHandler.addProject()
     ProjectHandler.addProject("testproject2")
@@ -194,10 +186,6 @@ function testFunction() {
     ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
     ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
     ProjectHandler.projectsArray[0].todos[0].togglePriority()
-    ProjectHandler.projectsArray[0].todos[0].togglePriority()
-    // StorageHandler.saveFrom(ProjectHandler.projectsArray)
     ProjectHandler.projectsArray[0].todos[0].toggleisDone()
     ProjectHandler.projectsArray[0].editName("newName")
-
-    console.log(displayController.bodyEl)
 }

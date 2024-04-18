@@ -1,5 +1,10 @@
+import { format } from 'date-fns';
+import { DateHandler } from './date.js'
+
 export const displayController = (function() {
     let currentProjectIndex = 0
+    // let isTodoEditDialog = false
+    // let isProjectEditDialog = false
     const bodyEl = document.querySelector("body")
 
     const containerEl = document.createElement("div")
@@ -108,7 +113,7 @@ export const displayController = (function() {
             deleteTodoBtnEl.classList.add("delete-btn")
 
             todoTitleEl.textContent = todo.title
-            todoDueDateEl.textContent = todo.dueDate
+            todoDueDateEl.textContent = DateHandler.formatDate(todo.dueDate)
             viewTodoBtnEl.textContent = "view"
             deleteTodoBtnEl.textContent = "delete"
 
@@ -146,7 +151,6 @@ export const displayController = (function() {
 
         return nameInputEl
     }
-
 
     function todoDialog() {
         console.log("rendering todo dialog")
@@ -227,6 +231,7 @@ export const displayController = (function() {
         const todoNotesViewEl = document.createElement("p")
         const todoIsHighPriorityViewEl = document.createElement("p")
         const todoIsDoneViewEl = document.createElement("p")
+        const editBtnEl = document.createElement("button")
        
         todoTitleViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].title
         todoDescriptionViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].description
@@ -234,17 +239,42 @@ export const displayController = (function() {
         todoNotesViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].notes
         todoIsHighPriorityViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
         todoIsDoneViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isDone
+        editBtnEl.textContent = "edit"
+
+        editBtnEl.classList.add("edit-btn")
+        editBtnEl.setAttribute("data-index", todoIndex)
 
         todoViewContainer.appendChild(todoTitleViewEl)
         todoViewContainer.appendChild(todoDescriptionViewEl)
         todoViewContainer.appendChild(todoDueDateViewEl)
         todoViewContainer.appendChild(todoNotesViewEl)
         todoViewContainer.appendChild(todoIsHighPriorityViewEl)
-        todoViewContainer.appendChild(todoIsDoneViewEl)        
+        todoViewContainer.appendChild(todoIsDoneViewEl)
+        todoViewContainer.appendChild(editBtnEl)       
         formContentEl.appendChild(todoViewContainer)
     }
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, bodyEl }
+    function editTodoForm(projectsArray, projectIndex, todoIndex) {
+        formContentEl.textContent = ""
+        formContentEl.appendChild(todoDialog())
+
+        todoTitleInputEl.value = projectsArray[projectIndex].todos[todoIndex].title
+        todoDescriptionInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].description
+        todoDueDateInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].dueDate       
+        todoNotesInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].notes
+        // todoPriorityEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
+
+        const isHighPriority = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
+
+        if (!isHighPriority) {
+            todoPriorityEl.textContent = "Normal"
+        } else if (isHighPriority) {
+            todoPriorityEl.textContent = "High"
+            todoPriorityEl.classList.add("high-priority")
+        }
+    }
+
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm }
 
 }())
 
