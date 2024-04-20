@@ -70,7 +70,7 @@ export const displayController = (function() {
     }
 
 
-    function renderProjects(projectsArray) {
+    function renderProjects(projectsArray, projectIndex = 0) {
         leftPanelEl.textContent = ""
         projectsArray.forEach((project, index) => {
             const projectEl = document.createElement("button")
@@ -81,7 +81,7 @@ export const displayController = (function() {
             leftPanelEl.appendChild(projectEl)
         })
 
-        renderTodos(projectsArray)
+        renderTodos(projectsArray, projectIndex)
     }
 
 
@@ -260,7 +260,7 @@ export const displayController = (function() {
 
         todoTitleInputEl.value = projectsArray[projectIndex].todos[todoIndex].title
         todoDescriptionInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].description
-        todoDueDateInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].dueDate       
+        todoDueDateInputEl.value = DateHandler.formatDateForInput(projectsArray[currentProjectIndex].todos[todoIndex].dueDate)      
         todoNotesInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].notes
         // todoPriorityEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
 

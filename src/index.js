@@ -102,7 +102,7 @@ function app() {
             element.addEventListener("click", (event) => {
                 const index = event.target.getAttribute("data-index")
                 displayController.renderTodos(ProjectHandler.projectsArray, index)
-                attachTodoEvents()
+                // attachTodoEvents()
             })
         })
     }
@@ -112,20 +112,21 @@ function app() {
 
         todoElList.forEach(element => {
             element.addEventListener("click", (event) => {
-                const currentProject = displayController.getCurrentProjectIndex()
-                const currentTodo = event.target.getAttribute("data-index")
+                const todoIndex = event.target.getAttribute("data-index")
+                const currentProjectIndex = displayController.getCurrentProjectIndex()
 
                 switch (event.target.getAttribute("class")) {
                     case "view-btn":
                         const dialogEl = document.querySelector("dialog")
                         dialogEl.showModal()
-                        displayController.renderViewTodo(ProjectHandler.projectsArray, currentProject, currentTodo)
+                        displayController.renderViewTodo(ProjectHandler.projectsArray, currentProjectIndex, todoIndex)
                         attachEditBtnEvent()
-                        console.log(ProjectHandler.projectsArray)
                         break
                     case "delete-btn":
-                        ProjectHandler.deleteTodo(currentProject, currentTodo)
-                        displayController.renderTodos(ProjectHandler.projectsArray, currentProject)
+                        ProjectHandler.deleteTodo(currentProjectIndex, todoIndex)
+                        displayController.renderTodos(ProjectHandler.projectsArray, currentProjectIndex)
+                        displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
+                        attachTodoEvents()
                         break
                 }})})
     }
@@ -138,7 +139,7 @@ function app() {
     }
 
     function attachCloseDialogEvent() {
-        const closeBtnEl = document.querySelector(".dialog-close-button")// export these also?
+        const closeBtnEl = document.querySelector(".dialog-close-button")
         const dialogEl = document.querySelector(".dialog")
 
         closeBtnEl.addEventListener("click", () => {
@@ -149,13 +150,15 @@ function app() {
 
     function attachSubmitEvents() {
         const submitBtnEl = document.querySelector(".submit-button")
+        const currentProjectIndex = displayController.getCurrentProjectIndex()
 
         submitBtnEl.addEventListener("click", () => {
-            const currentProject = displayController.getCurrentProjectIndex()
             const formValues = displayController.getTodoFormValues()
             
-            ProjectHandler.addTodo(currentProject, formValues)
-            //render again here
+            ProjectHandler.addTodo(displayController.getCurrentProjectIndex(), formValues)
+            displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
+            attachProjectTileEvents()
+            attachTodoEvents()
         })
     }
 
@@ -164,10 +167,9 @@ function app() {
         console.log(editBtnEl)
 
         editBtnEl.addEventListener("click", (e) => {
-            const currentProjectIndex = displayController.getCurrentProjectIndex()
             const todoIndex = e.target.getAttribute("data-index")
 
-            displayController.editTodoForm(ProjectHandler.projectsArray, currentProjectIndex, todoIndex)
+            displayController.editTodoForm(ProjectHandler.projectsArray, displayController.getCurrentProjectIndex(), todoIndex)
         })
     }
 }
@@ -175,7 +177,7 @@ function app() {
 app()
 
 function testFunction() {
-    StorageHandler.saveFrom(ProjectHandler.projectsArray)
+    // StorageHandler.saveFrom(ProjectHandler.projectsArray)
 
     ProjectHandler.addProject()
     ProjectHandler.addProject("testproject2")
