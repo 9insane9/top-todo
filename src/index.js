@@ -73,10 +73,11 @@ function app() {
     let isProjectPanelVisible = true
 
     displayController.createMainLayout()
-    displayController.renderProjects(ProjectHandler.projectsArray)
 
+    displayController.renderProjects(ProjectHandler.projectsArray)
     attachProjectTileEvents()
     attachTodoEvents()
+
     attachProjectPanelBtnEvent()
     attachDialogEvent()
     attachCloseDialogEvent()
@@ -102,7 +103,7 @@ function app() {
             element.addEventListener("click", (event) => {
                 const index = event.target.getAttribute("data-index")
                 displayController.renderTodos(ProjectHandler.projectsArray, index)
-                // attachTodoEvents()
+                attachTodoEvents()
             })
         })
     }
@@ -124,8 +125,9 @@ function app() {
                         break
                     case "delete-btn":
                         ProjectHandler.deleteTodo(currentProjectIndex, todoIndex)
-                        displayController.renderTodos(ProjectHandler.projectsArray, currentProjectIndex)
                         displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
+
+                        attachProjectTileEvents()
                         attachTodoEvents()
                         break
                 }})})
