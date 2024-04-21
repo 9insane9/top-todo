@@ -72,6 +72,9 @@ testFunction()
 function app() {
     let isProjectPanelVisible = true
 
+    let lastClickedProjectIndex = 0
+    let lastClickedTodoIndex = 0
+
     displayController.createMainLayout()
 
     displayController.renderProjects(ProjectHandler.projectsArray)
@@ -125,10 +128,7 @@ function app() {
                         break
                     case "delete-btn":
                         ProjectHandler.deleteTodo(currentProjectIndex, todoIndex)
-                        displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
-
-                        attachProjectTileEvents()
-                        attachTodoEvents()
+                        refreshApp()
                         break
                 }})})
     }
@@ -152,27 +152,50 @@ function app() {
 
     function attachSubmitEvents() {
         const submitBtnEl = document.querySelector(".submit-button")
+        submitBtnEl.addEventListener("click", () => submitEvent())
+    }
+
+    function submitEvent() {
+        const state = displayController.getSubmitBtnState()
+        console.log(state)
+        
         const currentProjectIndex = displayController.getCurrentProjectIndex()
 
-        submitBtnEl.addEventListener("click", () => {
-            const formValues = displayController.getTodoFormValues()
-            
-            ProjectHandler.addTodo(displayController.getCurrentProjectIndex(), formValues)
-            displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
-            attachProjectTileEvents()
-            attachTodoEvents()
-        })
+        switch (state) {
+            case "new-project":
+                ProjectHandler.addProject(displayController.getProjectName())
+                break
+            case "new-todo":
+                const formValues = displayController.getTodoFormValues()
+                ProjectHandler.addTodo(currentProjectIndex, formValues)
+                break
+            case "edit-todo":
+                ProjectHandler.deleteTodo(currentProjectIndex, lastClickedTodoIndex)
+                const newFormValues = displayController.getTodoFormValues()
+                ProjectHandler.addTodo(currentProjectIndex, newFormValues)
+                break
+        }
+        refreshApp()
+
     }
 
     function attachEditBtnEvent() {
         const editBtnEl = document.querySelector(".edit-btn")
-        console.log(editBtnEl)
 
         editBtnEl.addEventListener("click", (e) => {
             const todoIndex = e.target.getAttribute("data-index")
+            lastClickedTodoIndex = todoIndex
 
             displayController.editTodoForm(ProjectHandler.projectsArray, displayController.getCurrentProjectIndex(), todoIndex)
         })
+    }
+
+    function refreshApp() {
+        const currentProjectIndex = displayController.getCurrentProjectIndex()
+
+        displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
+        attachProjectTileEvents()
+        attachTodoEvents()
     }
 }
 
@@ -180,7 +203,6 @@ app()
 
 function testFunction() {
     // StorageHandler.saveFrom(ProjectHandler.projectsArray)
-
     ProjectHandler.addProject()
     ProjectHandler.addProject("testproject2")
     ProjectHandler.addTodo(0, testObj)

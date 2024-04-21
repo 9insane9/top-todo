@@ -3,8 +3,6 @@ import { DateHandler } from './date.js'
 
 export const displayController = (function() {
     let currentProjectIndex = 0
-    // let isTodoEditDialog = false
-    // let isProjectEditDialog = false
     const bodyEl = document.querySelector("body")
 
     const containerEl = document.createElement("div")
@@ -26,6 +24,8 @@ export const displayController = (function() {
     const todoDueDateInputEl = document.createElement("input")
     const todoNotesInputEl = document.createElement("textarea")
     const todoPriorityEl = document.createElement("button")
+
+    const nameInputEl = document.createElement("input")
 
     attachTogglePriorityButtonDisplayEvent()
 
@@ -143,17 +143,24 @@ export const displayController = (function() {
 
     function projectDialog() {
         console.log("rendering project dialog")
+        resetSubmitBtnClass()
+        submitBtnEl.classList.add("new-project-submit")
 
-        const nameInputEl = document.createElement("input")
+        const projectDialogContainerEl = document.createElement("div")
+        projectDialogContainerEl.classList.add("project-dialog-container")
 
         nameInputEl.setAttribute("type", "text")
         nameInputEl.setAttribute("placeholder", "My Project")
 
-        return nameInputEl
+        projectDialogContainerEl.appendChild(nameInputEl)
+
+        return projectDialogContainerEl
     }
 
     function todoDialog() {
         console.log("rendering todo dialog")
+        resetSubmitBtnClass()
+        submitBtnEl.classList.add("new-todo-submit")
 
         todoTitleInputEl.classList.add("form-input", "title")
         todoDescriptionInputEl.classList.add("form-input", "description")
@@ -200,6 +207,14 @@ export const displayController = (function() {
         return obj
     }
 
+    function getProjectName() {
+        if (nameInputEl.value) {
+            return nameInputEl.value
+        } 
+        return "My Project"
+        
+    }
+
     function attachTogglePriorityButtonDisplayEvent() {
         todoPriorityEl.addEventListener("click", (e) => {
 
@@ -235,7 +250,7 @@ export const displayController = (function() {
        
         todoTitleViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].title
         todoDescriptionViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].description
-        todoDueDateViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].dueDate
+        todoDueDateViewEl.textContent = DateHandler.formatDate(projectsArray[currentProjectIndex].todos[todoIndex].dueDate)
         todoNotesViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].notes
         todoIsHighPriorityViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
         todoIsDoneViewEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isDone
@@ -258,11 +273,13 @@ export const displayController = (function() {
         formContentEl.textContent = ""
         formContentEl.appendChild(todoDialog())
 
+        resetSubmitBtnClass()
+        submitBtnEl.classList.add("edit-todo-submit")
+
         todoTitleInputEl.value = projectsArray[projectIndex].todos[todoIndex].title
         todoDescriptionInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].description
         todoDueDateInputEl.value = DateHandler.formatDateForInput(projectsArray[currentProjectIndex].todos[todoIndex].dueDate)      
         todoNotesInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].notes
-        // todoPriorityEl.textContent = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
 
         const isHighPriority = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
 
@@ -274,7 +291,31 @@ export const displayController = (function() {
         }
     }
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm }
+    function resetSubmitBtnClass() {
+        submitBtnEl.removeAttribute("class")
+        submitBtnEl.classList.add("submit-button")
+    }
+
+    function resetTodoForm() {
+        
+    }
+
+    function getSubmitBtnState() {
+        let state
+
+        if (submitBtnEl.classList.contains("new-project-submit")) {
+            state = "new-project"
+        }
+        if (submitBtnEl.classList.contains("new-todo-submit")) {
+            state = "new-todo"
+        }
+        if (submitBtnEl.classList.contains("edit-todo-submit")) {
+            state = "edit-todo"
+        }
+        return state
+    }
+
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName }
 
 }())
 
