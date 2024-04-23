@@ -101,26 +101,31 @@ export const displayController = (function() {
             const todoDueDateEl = document.createElement("h3")
             const viewTodoBtnEl = document.createElement("button")
             const deleteTodoBtnEl = document.createElement("button")
+            const isDoneBtn = document.createElement("button")
 
             todoEl.setAttribute("data-index", index)
             viewTodoBtnEl.setAttribute("data-index", index)
             deleteTodoBtnEl.setAttribute("data-index", index)
+            isDoneBtn.setAttribute("data-index", index)
 
             todoEl.classList.add("todo")
             todoTitleEl.classList.add("todo-title")
             todoDueDateEl.classList.add("todo-duedate")
             viewTodoBtnEl.classList.add("view-btn")
             deleteTodoBtnEl.classList.add("delete-btn")
+            isDoneBtn.classList.add("is-done-btn")
 
             todoTitleEl.textContent = todo.title
             todoDueDateEl.textContent = DateHandler.formatDate(todo.dueDate)
             viewTodoBtnEl.textContent = "view"
             deleteTodoBtnEl.textContent = "delete"
+            isDoneBtn.textContent = getIsDone(todo, isDoneBtn)
 
             todoEl.appendChild(todoTitleEl)
             todoEl.appendChild(todoDueDateEl)
             todoEl.appendChild(viewTodoBtnEl)
             todoEl.appendChild(deleteTodoBtnEl)
+            todoEl.appendChild(isDoneBtn)
             rightPanelEl.appendChild(todoEl)
         })
         }
@@ -151,6 +156,7 @@ export const displayController = (function() {
 
         nameInputEl.setAttribute("type", "text")
         nameInputEl.setAttribute("placeholder", "My Project")
+        nameInputEl.value = ""
 
         projectDialogContainerEl.appendChild(nameInputEl)
 
@@ -160,6 +166,7 @@ export const displayController = (function() {
     function todoDialog() {
         console.log("rendering todo dialog")
         resetSubmitBtnClass()
+        resetTodoForm()
         submitBtnEl.classList.add("new-todo-submit")
 
         todoTitleInputEl.classList.add("form-input", "title")
@@ -188,6 +195,9 @@ export const displayController = (function() {
         return todoDialogContainerEl
     }
 
+    function togglePanelInvisible() {
+        leftPanelEl.classList.toggle("invisible")
+    }
 
     function getCurrentProjectIndex() {
         return currentProjectIndex
@@ -296,8 +306,43 @@ export const displayController = (function() {
         submitBtnEl.classList.add("submit-button")
     }
 
-    function resetTodoForm() {
+    function resetTodoForm() {        
+        todoTitleInputEl.value = ""
+        todoDescriptionInputEl.value = ""
+        todoDueDateInputEl.value = ""   
+        todoNotesInputEl.value = ""
+        todoPriorityEl.textContent = "Normal"
+        todoPriorityEl.classList.remove("high-priority")
+    }
+
+    function toggleIsDoneEvent() {
+        const isDoneBtn = document.querySelector(".is-done-btn")
+        console.log(isDoneBtn)
+        let text
+
+        if (isDoneBtn.classList.contains("not-done")) {
+            isDoneBtn.classList.remove("not-done")
+            isDoneBtn.classList.add("done")
+            text = "done"
+        } else if (isDoneBtn.classList.contains("done")) {
+            isDoneBtn.classList.remove("done")
+            isDoneBtn.classList.add("not-done")
+            text = "not done"
+        }
+        isDoneBtn.textContent = text
+    }
+
+    function getIsDone(todo, isDoneBtn) {
         
+        if(todo.isDone) {
+            isDoneBtn.classList.remove("not-done")
+            isDoneBtn.classList.add("done")
+            return "done"
+        } else if (!todo.isDone) {
+            isDoneBtn.classList.remove("done")
+            isDoneBtn.classList.add("not-done")
+            return "not done"
+        }
     }
 
     function getSubmitBtnState() {
@@ -315,7 +360,7 @@ export const displayController = (function() {
         return state
     }
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName }
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName, togglePanelInvisible, toggleIsDoneEvent }
 
 }())
 

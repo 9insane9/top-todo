@@ -1,4 +1,4 @@
-import StorageHandler from './storage.js';
+// import StorageHandler from './storage.js';
 import { displayController } from './display.js';
 import css from './style.css';
 
@@ -11,6 +11,11 @@ class ProjectHandler {
 
     static addTodo(currentProjectIndex = 0, obj) {
         this.projectsArray[currentProjectIndex].todos.push(new Todo(obj))
+    }
+
+    static editTodo(currentProjectIndex = 0, todoIndex, obj) {
+        this.deleteTodo(currentProjectIndex, todoIndex)
+        this.projectsArray[currentProjectIndex].todos.splice(todoIndex, 0, new Todo(obj))
     }
 
     static deleteProject(projectIndex) {
@@ -70,21 +75,13 @@ const testObj = {
 testFunction()
 
 function app() {
+    const currentProjectIndex = () => {return displayController.getCurrentProjectIndex() }
     let isProjectPanelVisible = true
-
-    let lastClickedProjectIndex = 0
     let lastClickedTodoIndex = 0
 
     displayController.createMainLayout()
-
-    displayController.renderProjects(ProjectHandler.projectsArray)
-    attachProjectTileEvents()
-    attachTodoEvents()
-
-    attachProjectPanelBtnEvent()
-    attachDialogEvent()
-    attachCloseDialogEvent()
-    attachSubmitEvents()
+    refreshApp()
+    attachMainEvents()
 
     function attachProjectPanelBtnEvent() {
         const projectPanelBtn = document.querySelector(".projects-button")
@@ -92,8 +89,7 @@ function app() {
     }
 
     function projectPanelEvent() {
-        const leftPanelEl = document.querySelector(".left-panel")
-        leftPanelEl.classList.toggle("invisible")
+        displayController.togglePanelInvisible()
         isProjectPanelVisible ? isProjectPanelVisible = false : isProjectPanelVisible = true;
         console.log(`panel visibility ${isProjectPanelVisible}`)
 
@@ -113,24 +109,28 @@ function app() {
 
     function attachTodoEvents() {
         const todoElList = document.querySelectorAll(".todo")
-
+    
         todoElList.forEach(element => {
             element.addEventListener("click", (event) => {
                 const todoIndex = event.target.getAttribute("data-index")
-                const currentProjectIndex = displayController.getCurrentProjectIndex()
-
-                switch (event.target.getAttribute("class")) {
-                    case "view-btn":
-                        const dialogEl = document.querySelector("dialog")
-                        dialogEl.showModal()
-                        displayController.renderViewTodo(ProjectHandler.projectsArray, currentProjectIndex, todoIndex)
-                        attachEditBtnEvent()
-                        break
-                    case "delete-btn":
-                        ProjectHandler.deleteTodo(currentProjectIndex, todoIndex)
-                        refreshApp()
-                        break
-                }})})
+                const classList = event.target.classList;
+    
+                if (classList.contains("view-btn")) {
+                    const dialogEl = document.querySelector("dialog")
+                    dialogEl.showModal()
+                    displayController.renderViewTodo(ProjectHandler.projectsArray, currentProjectIndex(), todoIndex);
+                    attachEditBtnEvent()
+                } else if (classList.contains("delete-btn")) {
+                    ProjectHandler.deleteTodo(currentProjectIndex(), todoIndex)
+                    refreshApp()
+                } else if (classList.contains("is-done-btn")) {
+                    displayController.toggleIsDoneEvent();
+                    ProjectHandler.projectsArray[currentProjectIndex()].todos[todoIndex].toggleisDone()
+                    refreshApp()
+                    console.log(ProjectHandler.projectsArray[currentProjectIndex()])
+                }
+            })
+        })
     }
 
     function attachDialogEvent() {
@@ -159,20 +159,17 @@ function app() {
         const state = displayController.getSubmitBtnState()
         console.log(state)
         
-        const currentProjectIndex = displayController.getCurrentProjectIndex()
-
         switch (state) {
             case "new-project":
                 ProjectHandler.addProject(displayController.getProjectName())
                 break
             case "new-todo":
                 const formValues = displayController.getTodoFormValues()
-                ProjectHandler.addTodo(currentProjectIndex, formValues)
+                ProjectHandler.addTodo(currentProjectIndex(), formValues)
                 break
             case "edit-todo":
-                ProjectHandler.deleteTodo(currentProjectIndex, lastClickedTodoIndex)
                 const newFormValues = displayController.getTodoFormValues()
-                ProjectHandler.addTodo(currentProjectIndex, newFormValues)
+                ProjectHandler.editTodo(currentProjectIndex(), lastClickedTodoIndex, newFormValues)
                 break
         }
         refreshApp()
@@ -186,16 +183,21 @@ function app() {
             const todoIndex = e.target.getAttribute("data-index")
             lastClickedTodoIndex = todoIndex
 
-            displayController.editTodoForm(ProjectHandler.projectsArray, displayController.getCurrentProjectIndex(), todoIndex)
+            displayController.editTodoForm(ProjectHandler.projectsArray, currentProjectIndex(), todoIndex)
         })
     }
 
     function refreshApp() {
-        const currentProjectIndex = displayController.getCurrentProjectIndex()
-
-        displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex)
+        displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex())
         attachProjectTileEvents()
         attachTodoEvents()
+    }
+
+    function attachMainEvents(){
+        attachProjectPanelBtnEvent()
+        attachDialogEvent()
+        attachCloseDialogEvent()
+        attachSubmitEvents()
     }
 }
 
@@ -203,6 +205,7 @@ app()
 
 function testFunction() {
     // StorageHandler.saveFrom(ProjectHandler.projectsArray)
+    
     ProjectHandler.addProject()
     ProjectHandler.addProject("testproject2")
     ProjectHandler.addTodo(0, testObj)
