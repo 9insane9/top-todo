@@ -38,7 +38,7 @@ export default class StorageHandler {
                                         todo.description,
                                         todo.dueDate,
                                         todo.notes,
-                                        todo.priority,
+                                        todo.isHighPriority,
                                         todo.isDone)
                 
                 todosForNewProject.push(newTodo)

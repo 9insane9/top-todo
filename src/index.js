@@ -1,4 +1,4 @@
-// import StorageHandler from './storage.js';
+import StorageHandler from './storage.js';
 import { displayController } from './display.js';
 import css from './style.css';
 
