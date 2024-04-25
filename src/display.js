@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { DateHandler } from './date.js'
+import pencilImg from './images/pencil.png'
 
 export const displayController = (function() {
     let currentProjectIndex = 0
@@ -73,11 +74,21 @@ export const displayController = (function() {
     function renderProjects(projectsArray, projectIndex = 0) {
         leftPanelEl.textContent = ""
         projectsArray.forEach((project, index) => {
-            const projectEl = document.createElement("button")
+            const projectEl = document.createElement("div")
+            const projectNameSpanEl = document.createElement("span")
+            const editProjectImgEl = document.createElement("img")
 
             projectEl.classList.add("project-tile")
+            projectNameSpanEl.classList.add("project-name")
+            editProjectImgEl.classList.add("edit-project")
+
+            editProjectImgEl.setAttribute("src", `${pencilImg}`)
             projectEl.setAttribute("data-index", index)
-            projectEl.textContent = project.name
+            editProjectImgEl.setAttribute("data-index", index)
+            projectNameSpanEl.textContent = project.name
+
+            projectEl.appendChild(editProjectImgEl)
+            projectEl.appendChild(projectNameSpanEl)
             leftPanelEl.appendChild(projectEl)
         })
 
@@ -153,6 +164,7 @@ export const displayController = (function() {
 
         const projectDialogContainerEl = document.createElement("div")
         projectDialogContainerEl.classList.add("project-dialog-container")
+        nameInputEl.classList.add("project-name-input")
 
         nameInputEl.setAttribute("type", "text")
         nameInputEl.setAttribute("placeholder", "My Project")
@@ -165,6 +177,8 @@ export const displayController = (function() {
 
     function todoDialog() {
         console.log("rendering todo dialog")
+        const today = new Date()
+
         resetSubmitBtnClass()
         resetTodoForm()
         submitBtnEl.classList.add("new-todo-submit")
@@ -175,12 +189,12 @@ export const displayController = (function() {
         todoNotesInputEl.classList.add("form-input", "notes")
         todoPriorityEl.classList.add("form-input", "priority")
 
+        todoPriorityEl.textContent = "Normal"
+        todoPriorityEl.classList.remove("high-priority")
+
         todoTitleInputEl.setAttribute("type", "text")
         todoDescriptionInputEl.setAttribute("type", "text")
         todoDueDateInputEl.setAttribute("type", "date")
-
-        todoPriorityEl.textContent = "Normal"
-        todoPriorityEl.classList.remove("high-priority")
 
         todoTitleInputEl.setAttribute("placeholder", "play gaem")
         todoDescriptionInputEl.setAttribute("placeholder", "description of gaem")
@@ -288,7 +302,7 @@ export const displayController = (function() {
 
         todoTitleInputEl.value = projectsArray[projectIndex].todos[todoIndex].title
         todoDescriptionInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].description
-        todoDueDateInputEl.value = DateHandler.formatDateForInput(projectsArray[currentProjectIndex].todos[todoIndex].dueDate)      
+        todoDueDateInputEl.value = DateHandler.formatDateForInput(projectsArray[currentProjectIndex].todos[todoIndex].dueDate)
         todoNotesInputEl.value = projectsArray[currentProjectIndex].todos[todoIndex].notes
 
         const isHighPriority = projectsArray[currentProjectIndex].todos[todoIndex].isHighPriority
@@ -299,6 +313,19 @@ export const displayController = (function() {
             todoPriorityEl.textContent = "High"
             todoPriorityEl.classList.add("high-priority")
         }
+    }
+
+    function editProjectForm(projectsArray, projectIndex) {
+        formContentEl.textContent = ""
+        formContentEl.appendChild(projectDialog())
+        console.log("editing")
+
+        resetSubmitBtnClass()
+        submitBtnEl.classList.add("edit-project-submit")
+
+        nameInputEl.value = projectsArray[projectIndex].name
+
+        dialogEl.showModal()
     }
 
     function resetSubmitBtnClass() {
@@ -356,11 +383,14 @@ export const displayController = (function() {
         }
         if (submitBtnEl.classList.contains("edit-todo-submit")) {
             state = "edit-todo"
+        } if (submitBtnEl.classList.contains("edit-project-submit")) {
+            state = "edit-project"
         }
         return state
     }
 
-    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName, togglePanelInvisible, toggleIsDoneEvent }
+
+    return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName, togglePanelInvisible, toggleIsDoneEvent, editProjectForm }
 
 }())
 

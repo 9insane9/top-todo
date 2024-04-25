@@ -1,4 +1,4 @@
-import StorageHandler from './storage.js';
+// import StorageHandler from './storage.js';
 import { displayController } from './display.js';
 import css from './style.css';
 
@@ -78,6 +78,7 @@ function app() {
     const currentProjectIndex = () => {return displayController.getCurrentProjectIndex() }
     let isProjectPanelVisible = true
     let lastClickedTodoIndex = 0
+    let lastClickedProjectIndex = 0
 
     displayController.createMainLayout()
     refreshApp()
@@ -127,7 +128,6 @@ function app() {
                     displayController.toggleIsDoneEvent();
                     ProjectHandler.projectsArray[currentProjectIndex()].todos[todoIndex].toggleisDone()
                     refreshApp()
-                    console.log(ProjectHandler.projectsArray[currentProjectIndex()])
                 }
             })
         })
@@ -171,6 +171,10 @@ function app() {
                 const newFormValues = displayController.getTodoFormValues()
                 ProjectHandler.editTodo(currentProjectIndex(), lastClickedTodoIndex, newFormValues)
                 break
+            case "edit-project":
+                const newName = displayController.getProjectName()
+                ProjectHandler.projectsArray[lastClickedProjectIndex].editName(newName)
+                break
         }
         refreshApp()
 
@@ -182,14 +186,27 @@ function app() {
         editBtnEl.addEventListener("click", (e) => {
             const todoIndex = e.target.getAttribute("data-index")
             lastClickedTodoIndex = todoIndex
+            console.log(`last clicked project is ${lastClickedProjectIndex}`)
 
             displayController.editTodoForm(ProjectHandler.projectsArray, currentProjectIndex(), todoIndex)
+        })
+    }
+
+    function attachEditProjectEvents() {
+        const editProjectElList = document.querySelectorAll(".edit-project")
+        editProjectElList.forEach(element => {
+            element.addEventListener("click", event => {
+                lastClickedProjectIndex = event.target.getAttribute("data-index")
+                displayController.editProjectForm(ProjectHandler.projectsArray, lastClickedProjectIndex)
+                event.stopImmediatePropagation()
+            })
         })
     }
 
     function refreshApp() {
         displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex())
         attachProjectTileEvents()
+        attachEditProjectEvents()
         attachTodoEvents()
     }
 

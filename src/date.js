@@ -13,6 +13,6 @@ export class DateHandler {
         if (!Date.parse(date)) {
             return date
         }
-       return format(date, "yyyy-mm-dd")
+       return format(date, "yyyy-MM-dd")
     }
 }

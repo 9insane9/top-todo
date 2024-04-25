@@ -10,6 +10,25 @@
     border: 1px solid red;
 }
 
+.project-tile {
+    height: 100px;
+    width: 200px;
+    border: 1px solid green;
+}
+
+.edit-project {
+    width: 40px;
+    height: 40px;
+}
+
+.edit-project:hover {
+    filter: drop-shadow(3px 3px 3px red);
+}
+
+.project-tile:hover {
+    background-color: aquamarine;
+}
+
 .right-panel {
     width: 75%;
     border: 1px solid blue;
