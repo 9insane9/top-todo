@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { DateHandler } from './date.js'
 import pencilImg from './images/pencil.png'
+import trashcanImg from './images/trash-can-outline.png'
 
 export const displayController = (function() {
     let currentProjectIndex = 0
@@ -70,9 +71,9 @@ export const displayController = (function() {
         bodyEl.appendChild(containerEl)        
     }
 
-
     function renderProjects(projectsArray, projectIndex = 0) {
         leftPanelEl.textContent = ""
+        
         projectsArray.forEach((project, index) => {
             const projectEl = document.createElement("div")
             const projectNameSpanEl = document.createElement("span")
@@ -100,44 +101,45 @@ export const displayController = (function() {
         rightPanelEl.textContent = ""
 
         currentProjectIndex = projectIndex
+        const currentProject = projectsArray[projectIndex]
+        
         console.log(`currentProjectIndex: ${currentProjectIndex}`)
-
-        if (projectsArray[projectIndex].todos.length === 0) {
+        console.log(`looking at ${projectsArray[currentProjectIndex]}`)
+        if (!currentProject || !currentProject.todos || currentProject.todos.length === 0) {
             rightPanelEl.textContent = "First task: make todo list!"
          } else {
+            projectsArray[projectIndex].todos.forEach((todo, index) => {
+                const todoEl = document.createElement("div")
+                const todoTitleEl = document.createElement("h3")
+                const todoDueDateEl = document.createElement("h3")
+                const viewTodoBtnEl = document.createElement("button")
+                const deleteTodoBtnEl = document.createElement("button")
+                const isDoneBtn = document.createElement("button")
 
-        projectsArray[projectIndex].todos.forEach((todo, index) => {
-            const todoEl = document.createElement("div")
-            const todoTitleEl = document.createElement("h3")
-            const todoDueDateEl = document.createElement("h3")
-            const viewTodoBtnEl = document.createElement("button")
-            const deleteTodoBtnEl = document.createElement("button")
-            const isDoneBtn = document.createElement("button")
+                todoEl.setAttribute("data-index", index)
+                viewTodoBtnEl.setAttribute("data-index", index)
+                deleteTodoBtnEl.setAttribute("data-index", index)
+                isDoneBtn.setAttribute("data-index", index)
 
-            todoEl.setAttribute("data-index", index)
-            viewTodoBtnEl.setAttribute("data-index", index)
-            deleteTodoBtnEl.setAttribute("data-index", index)
-            isDoneBtn.setAttribute("data-index", index)
+                todoEl.classList.add("todo")
+                todoTitleEl.classList.add("todo-title")
+                todoDueDateEl.classList.add("todo-duedate")
+                viewTodoBtnEl.classList.add("view-btn")
+                deleteTodoBtnEl.classList.add("delete-btn")
+                isDoneBtn.classList.add("is-done-btn")
 
-            todoEl.classList.add("todo")
-            todoTitleEl.classList.add("todo-title")
-            todoDueDateEl.classList.add("todo-duedate")
-            viewTodoBtnEl.classList.add("view-btn")
-            deleteTodoBtnEl.classList.add("delete-btn")
-            isDoneBtn.classList.add("is-done-btn")
+                todoTitleEl.textContent = todo.title
+                todoDueDateEl.textContent = DateHandler.formatDate(todo.dueDate)
+                viewTodoBtnEl.textContent = "view"
+                deleteTodoBtnEl.textContent = "delete"
+                isDoneBtn.textContent = getIsDone(todo, isDoneBtn)
 
-            todoTitleEl.textContent = todo.title
-            todoDueDateEl.textContent = DateHandler.formatDate(todo.dueDate)
-            viewTodoBtnEl.textContent = "view"
-            deleteTodoBtnEl.textContent = "delete"
-            isDoneBtn.textContent = getIsDone(todo, isDoneBtn)
-
-            todoEl.appendChild(todoTitleEl)
-            todoEl.appendChild(todoDueDateEl)
-            todoEl.appendChild(viewTodoBtnEl)
-            todoEl.appendChild(deleteTodoBtnEl)
-            todoEl.appendChild(isDoneBtn)
-            rightPanelEl.appendChild(todoEl)
+                todoEl.appendChild(todoTitleEl)
+                todoEl.appendChild(todoDueDateEl)
+                todoEl.appendChild(viewTodoBtnEl)
+                todoEl.appendChild(deleteTodoBtnEl)
+                todoEl.appendChild(isDoneBtn)
+                rightPanelEl.appendChild(todoEl)
         })
         }
     }
@@ -213,6 +215,13 @@ export const displayController = (function() {
         leftPanelEl.classList.toggle("invisible")
     }
 
+    function toggleSubmitInvisible() {
+        if (submitBtnEl.getAttribute("class") === "submit-button") {
+            submitBtnEl.classList.add("invisible")
+            
+        }
+    }
+
     function getCurrentProjectIndex() {
         return currentProjectIndex
     }
@@ -260,6 +269,8 @@ export const displayController = (function() {
 
     function renderViewTodo(projectsArray, currentProjectIndex, todoIndex) {
         formContentEl.textContent = ""
+        resetSubmitBtnClass()
+        toggleSubmitInvisible()
 
         const todoViewContainer = document.createElement("div")
         todoViewContainer.classList.add("todo-view-container")
@@ -316,9 +327,14 @@ export const displayController = (function() {
     }
 
     function editProjectForm(projectsArray, projectIndex) {
+        const deleteProjectEl = document.createElement("img")
+        deleteProjectEl.setAttribute("src",`${trashcanImg}`)
+        deleteProjectEl.classList.add("delete-project")
+
         formContentEl.textContent = ""
         formContentEl.appendChild(projectDialog())
-        console.log("editing")
+        formContentEl.appendChild(deleteProjectEl)
+        // console.log("editing")
 
         resetSubmitBtnClass()
         submitBtnEl.classList.add("edit-project-submit")

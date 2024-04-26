@@ -16,12 +16,12 @@
     border: 1px solid green;
 }
 
-.edit-project {
+.edit-project, .delete-project {
     width: 40px;
     height: 40px;
 }
 
-.edit-project:hover {
+.edit-project:hover, .delete-project:hover {
     filter: drop-shadow(3px 3px 3px red);
 }
 

@@ -1,20 +1,27 @@
-export default class StorageHandler {
+export class StorageHandler {
     static projectsParsed = []
     static projectsProcessed = []
 
     static saveFrom(array) {
-        console.log("saving to local storage")
-
-        const projectsJSON = JSON.stringify(array)
-        localStorage.setItem("projectsJSON", projectsJSON)
+        console.log("saving to local storage");
+    
+        if (array.length === 0) {
+            localStorage.removeItem("projectsJSON");
+        } else {
+            const projectsJSON = JSON.stringify(array);
+            localStorage.setItem("projectsJSON", projectsJSON);
+        }
     }
 
     static loadJSON(ref = "projectsJSON") {
-        if (!localStorage.getItem(ref)) {
-            localStorage.setItem("projectsJSON", "")
+        const storedData = localStorage.getItem(ref);
+        console.log("Stored Data:", storedData)
+    
+        if (!storedData) {
+            localStorage.setItem(ref, "[]");
+            this.projectsParsed = [];
         } else {
-            const text = localStorage.getItem(ref)
-            this.projectsParsed = JSON.parse(text)
+            this.projectsParsed = JSON.parse(storedData);
         }
     }
 
@@ -48,5 +55,17 @@ export default class StorageHandler {
             output.push(newProject)
         })
         this.projectsProcessed = output;
+    }
+
+    static initializeTo(liveProjectArray, projectConstructor) {
+        if (liveProjectArray.length === 0) {
+            this.loadJSON()
+            console.log(`${this.projectsParsed.length}`)
+            console.log("live array is empty")
+            if (this.projectsParsed.length === 0) {
+                liveProjectArray.push(new projectConstructor())
+                console.log(`starting fresh ${liveProjectArray}`)
+            }
+        }
     }
 }

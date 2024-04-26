@@ -1,4 +1,4 @@
-// import StorageHandler from './storage.js';
+import { StorageHandler } from './storage.js';
 import { displayController } from './display.js';
 import css from './style.css';
 
@@ -19,7 +19,11 @@ class ProjectHandler {
     }
 
     static deleteProject(projectIndex) {
+        if (this.projectsArray === 1) {
+            this.projectsArray = []
+        } else {
         this.projectsArray.splice(projectIndex, 1)
+        }
     }
 
     static deleteTodo(projectIndex, todoIndex) {
@@ -145,7 +149,6 @@ function app() {
         const dialogEl = document.querySelector(".dialog")
 
         closeBtnEl.addEventListener("click", () => {
-            console.log("closing dialog")
             dialogEl.close()
         })
     }
@@ -198,12 +201,28 @@ function app() {
             element.addEventListener("click", event => {
                 lastClickedProjectIndex = event.target.getAttribute("data-index")
                 displayController.editProjectForm(ProjectHandler.projectsArray, lastClickedProjectIndex)
+                attachDeleteProjectEvent()
                 event.stopImmediatePropagation()
             })
         })
     }
 
+    function attachDeleteProjectEvent() {
+        const dialogEl = document.querySelector(".dialog")
+        const deleteProjectBtn = document.querySelector(".delete-project")
+        deleteProjectBtn.addEventListener("click", (event) => {
+            ProjectHandler.deleteProject(lastClickedProjectIndex)
+            console.log(ProjectHandler.projectsArray)
+            StorageHandler.saveFrom(ProjectHandler.projectsArray)
+            event.stopImmediatePropagation()
+            dialogEl.close()
+            refreshApp()
+        }) 
+    }
+
     function refreshApp() {
+        StorageHandler.initializeTo(ProjectHandler.projectsArray, Project)
+        StorageHandler.saveFrom(ProjectHandler.projectsArray)
         displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex())
         attachProjectTileEvents()
         attachEditProjectEvents()
@@ -222,7 +241,6 @@ app()
 
 function testFunction() {
     // StorageHandler.saveFrom(ProjectHandler.projectsArray)
-    
     ProjectHandler.addProject()
     ProjectHandler.addProject("testproject2")
     ProjectHandler.addTodo(0, testObj)
