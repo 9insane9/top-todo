@@ -76,7 +76,7 @@ const testObj = {
     isDone: false
 }
 
-testFunction()
+// testFunction()
 
 function app() {
     const currentProjectIndex = () => {return displayController.getCurrentProjectIndex() }
@@ -84,6 +84,7 @@ function app() {
     let lastClickedTodoIndex = 0
     let lastClickedProjectIndex = 0
 
+    StorageHandler.initializeTo(ProjectHandler.projectsArray, Project, Todo)
     displayController.createMainLayout()
     refreshApp()
     attachMainEvents()
@@ -214,6 +215,7 @@ function app() {
             ProjectHandler.deleteProject(lastClickedProjectIndex)
             console.log(ProjectHandler.projectsArray)
             StorageHandler.saveFrom(ProjectHandler.projectsArray)
+            StorageHandler.createDefaultProject(ProjectHandler.projectsArray, Project)
             event.stopImmediatePropagation()
             dialogEl.close()
             refreshApp()
@@ -221,8 +223,10 @@ function app() {
     }
 
     function refreshApp() {
-        StorageHandler.initializeTo(ProjectHandler.projectsArray, Project)
-        StorageHandler.saveFrom(ProjectHandler.projectsArray)
+        if (ProjectHandler.projectsArray.length !== 0) {
+            StorageHandler.saveFrom(ProjectHandler.projectsArray)
+            StorageHandler.createDefaultProject(ProjectHandler.projectsArray, Project)
+        }
         displayController.renderProjects(ProjectHandler.projectsArray, currentProjectIndex())
         attachProjectTileEvents()
         attachEditProjectEvents()
@@ -239,17 +243,16 @@ function app() {
 
 app()
 
-function testFunction() {
-    // StorageHandler.saveFrom(ProjectHandler.projectsArray)
-    ProjectHandler.addProject()
-    ProjectHandler.addProject("testproject2")
-    ProjectHandler.addTodo(0, testObj)
-    ProjectHandler.addTodo(1, testObj)
-    ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
-    ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
-    ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
-    ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
-    ProjectHandler.projectsArray[0].todos[0].togglePriority()
-    ProjectHandler.projectsArray[0].todos[0].toggleisDone()
-    ProjectHandler.projectsArray[0].editName("newName")
-}
+// function testFunction() {
+//     ProjectHandler.addProject()
+//     ProjectHandler.addProject("testproject2")
+//     ProjectHandler.addTodo(0, testObj)
+//     ProjectHandler.addTodo(1, testObj)
+//     ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
+//     ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
+//     ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
+//     ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
+//     ProjectHandler.projectsArray[0].todos[0].togglePriority()
+//     ProjectHandler.projectsArray[0].todos[0].toggleisDone()
+//     ProjectHandler.projectsArray[0].editName("newName")
+// }

@@ -3,14 +3,16 @@ export class StorageHandler {
     static projectsProcessed = []
 
     static saveFrom(array) {
-        console.log("saving to local storage");
+        console.log("saving to local storage")
     
         if (array.length === 0) {
-            localStorage.removeItem("projectsJSON");
+            localStorage.removeItem("projectsJSON")
         } else {
-            const projectsJSON = JSON.stringify(array);
-            localStorage.setItem("projectsJSON", projectsJSON);
+            const projectsJSON = JSON.stringify(array)
+            localStorage.setItem("projectsJSON", projectsJSON)
         }
+    
+        console.log(`local data saved: ${localStorage.getItem("projectsJSON")}`)
     }
 
     static loadJSON(ref = "projectsJSON") {
@@ -28,9 +30,8 @@ export class StorageHandler {
     static loadTo(array, projectConstructor, todoConstructor) {
         console.log("loading stuff to array")
 
-        this.loadJSON()
         this.addMethods(projectConstructor, todoConstructor)
-        array = this.projectsProcessed
+        array.splice(0, array.length, ...this.projectsProcessed);
     }
 
     static addMethods(projectConstructor, todoConstructor) {
@@ -41,31 +42,42 @@ export class StorageHandler {
             const todosForNewProject = []
 
             project.todos.forEach(todo => {
-                const newTodo = new todoConstructor(todo.title, 
-                                        todo.description,
-                                        todo.dueDate,
-                                        todo.notes,
-                                        todo.isHighPriority,
-                                        todo.isDone)
+                const newTodo = new todoConstructor(todo)
                 
                 todosForNewProject.push(newTodo)
             })
         
-            newProject.todos = todosForNewProject
+            newProject.todos = [...todosForNewProject]
             output.push(newProject)
         })
-        this.projectsProcessed = output;
+
+        this.projectsProcessed.push(...output)
+        console.log(`local data processed:`)
+        console.log(this.projectsProcessed)
     }
 
-    static initializeTo(liveProjectArray, projectConstructor) {
+    static initializeTo(liveProjectArray, projectConstructor, todoConstructor) {
+        this.loadJSON()
+        console.log(`data initialized:`)
+        console.log(this.projectsParsed)
+
+        if (this.projectsParsed.length !== 0) {
+            this.loadTo(liveProjectArray, projectConstructor, todoConstructor)
+            console.log(`data loaded to live:`)
+            console.log(liveProjectArray)
+        } else {
+            this.createDefaultProject(liveProjectArray, projectConstructor)
+        }
+    }
+
+    static createDefaultProject(liveProjectArray, projectConstructor) {
         if (liveProjectArray.length === 0) {
-            this.loadJSON()
-            console.log(`${this.projectsParsed.length}`)
-            console.log("live array is empty")
-            if (this.projectsParsed.length === 0) {
-                liveProjectArray.push(new projectConstructor())
-                console.log(`starting fresh ${liveProjectArray}`)
-            }
+            const defaultProject = new projectConstructor()
+
+            liveProjectArray.push(defaultProject)
+            this.saveFrom(liveProjectArray)
+
+            console.log(`starting fresh with: ${liveProjectArray}`)
         }
     }
 }

@@ -104,7 +104,8 @@ export const displayController = (function() {
         const currentProject = projectsArray[projectIndex]
         
         console.log(`currentProjectIndex: ${currentProjectIndex}`)
-        console.log(`looking at ${projectsArray[currentProjectIndex]}`)
+        console.log(`looking at:`)
+        console.log(projectsArray[currentProjectIndex])
         if (!currentProject || !currentProject.todos || currentProject.todos.length === 0) {
             rightPanelEl.textContent = "First task: make todo list!"
          } else {
@@ -153,8 +154,10 @@ export const displayController = (function() {
 
         if (isProjectPanelVisible) {
             formContentEl.appendChild(projectDialog())
+            nameInputEl.focus()
         } else {
             formContentEl.appendChild(todoDialog())
+            todoTitleInputEl.focus()
         }
     }
 
@@ -403,6 +406,10 @@ export const displayController = (function() {
             state = "edit-project"
         }
         return state
+    }
+
+    function getInputLength(input) {
+        return input.value.length
     }
 
 
