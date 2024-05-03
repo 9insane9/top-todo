@@ -15,6 +15,7 @@ export const displayController = (function() {
     const projectsBtnEl = document.createElement("button")
     const addBtn = document.createElement("button")
     const dialogEl = document.createElement("dialog")
+    const counterEl = document.createElement("div")
     const dialogCloseBtnEl = document.createElement("button")
     const dialogCloseBtnImageEl = document.createElement("image")
     const formEl = document.createElement("form")
@@ -30,6 +31,7 @@ export const displayController = (function() {
     const nameInputEl = document.createElement("input")
 
     attachTogglePriorityButtonDisplayEvent()
+    attachCounterEvent()
 
     function createMainLayout() {
         containerEl.classList.add("container")
@@ -38,6 +40,7 @@ export const displayController = (function() {
         rightPanelEl.classList.add("right-panel")
         displayBottomEl.classList.add("display-bottom")
         dialogEl.classList.add("dialog")
+        counterEl.classList.add("counter")
         dialogCloseBtnEl.classList.add("dialog-close-button")
         dialogCloseBtnImageEl.classList.add("dialog-close-image")
         formEl.classList.add("form")
@@ -55,10 +58,12 @@ export const displayController = (function() {
         addBtn.textContent = "ADD"
         dialogCloseBtnEl.textContent = "CLOSE"
         submitBtnEl.textContent = "SUBMIT"
+        counterEl.textContent = `${document.activeElement}`
 
         displayTopEl.appendChild(leftPanelEl)
         displayTopEl.appendChild(rightPanelEl)
         dialogCloseBtnEl.appendChild(dialogCloseBtnImageEl)
+        dialogEl.appendChild(counterEl)
         dialogEl.appendChild(dialogCloseBtnEl)
         dialogEl.appendChild(formEl)
         containerEl.appendChild(displayTopEl)
@@ -148,6 +153,7 @@ export const displayController = (function() {
 
     function renderDialog(isProjectPanelVisible = 0) {
         dialogEl.showModal()
+        resetCounter()
 
         const formContentEl = document.querySelector(".form-content")
         formContentEl.textContent = ""
@@ -408,9 +414,94 @@ export const displayController = (function() {
         return state
     }
 
-    function getInputLength(input) {
-        return input.value.length
+    function getActiveInputElement() {
+        const type = document.activeElement.getAttribute("type")
+        console.log(document.activeElement.tagName)
+
+        if (type === "text" || document.activeElement.tagName === "TEXTAREA") {
+            return document.activeElement
+        }
     }
+
+    function getInputIdentifier() {
+        const classList = getActiveInputElement().classList
+        let state
+        
+        if (classList.contains("title")) {
+            console.log("title")
+            state = "title"
+        }
+        if (classList.contains("description")) {
+            console.log("description")
+            state = "description"
+        }
+        if (classList.contains("notes")) {
+            console.log("notes")
+            state = "notes"
+        }
+        if (classList.contains("project-name-input")) {
+            console.log("project")
+            state = "project"
+        }
+        return state
+    }
+
+    function getActiveInputLength() {
+        const activeInput = getActiveInputElement()
+        if (activeInput) {
+            console.log(activeInput.value.length)
+            return activeInput.value.length
+        }
+        return 0;
+    }
+
+    function attachCounterEvent() {
+        document.addEventListener("keyup", () => { counterEvent() })
+    }
+
+    const counterObj = {
+        titleCount: 0,
+        descriptionCount: 0,
+        notesCount: 0,
+        projectCount: 0,
+    }
+
+    function resetCounter() {
+        counterObj.titleCount = 0
+        counterObj.descriptionCount = 0
+        counterObj.notesCount = 0
+        counterObj.projectCount = 0
+
+        counterEl.textContent = ""
+    }
+
+    function counterEvent() {
+        const titleLimit = 60
+        const descriptionLimit = 100
+        const notesLimit = 300
+        const projectLimit = 60
+
+        switch (getInputIdentifier()) {
+            case "title":
+                counterObj.titleCount = getActiveInputLength()
+                counterEl.textContent = `${counterObj.titleCount} / ${titleLimit}`
+                break
+            case "description":
+                counterObj.descriptionCount = getActiveInputLength()
+                counterEl.textContent = `${counterObj.descriptionCount} / ${descriptionLimit}`
+                break
+            case "notes":
+                counterObj.notesCount = getActiveInputLength()
+                counterEl.textContent = `${counterObj.notesCount} / ${notesLimit}`
+                break
+            case "project":
+                counterObj.projectCount = getActiveInputLength()
+                counterEl.textContent = `${counterObj.projectCount} / ${projectLimit}`
+                break
+        }
+        console.log(counterObj)
+    }
+
 
 
     return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName, togglePanelInvisible, toggleIsDoneEvent, editProjectForm }
