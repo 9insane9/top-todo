@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 import { DateHandler } from './date.js'
 import pencilImg from './images/pencil.png'
 import trashcanImg from './images/trash-can-outline.png'
@@ -91,6 +91,7 @@ export const displayController = (function() {
             editProjectImgEl.setAttribute("src", `${pencilImg}`)
             projectEl.setAttribute("data-index", index)
             editProjectImgEl.setAttribute("data-index", index)
+            projectNameSpanEl.setAttribute("data-index", index)
             projectNameSpanEl.textContent = project.name
 
             projectEl.appendChild(editProjectImgEl)
@@ -153,7 +154,6 @@ export const displayController = (function() {
 
     function renderDialog(isProjectPanelVisible = 0) {
         dialogEl.showModal()
-        resetCounter()
 
         const formContentEl = document.querySelector(".form-content")
         formContentEl.textContent = ""
@@ -171,6 +171,8 @@ export const displayController = (function() {
     function projectDialog() {
         console.log("rendering project dialog")
         resetSubmitBtnClass()
+        resetCounter()
+        checkIfDisableButton()
         submitBtnEl.classList.add("new-project-submit")
 
         const projectDialogContainerEl = document.createElement("div")
@@ -192,6 +194,8 @@ export const displayController = (function() {
 
         resetSubmitBtnClass()
         resetTodoForm()
+        resetCounter()
+        checkIfDisableButton()
         submitBtnEl.classList.add("new-todo-submit")
 
         todoTitleInputEl.classList.add("form-input", "title")
@@ -456,7 +460,12 @@ export const displayController = (function() {
     }
 
     function attachCounterEvent() {
-        document.addEventListener("keyup", () => { counterEvent() })
+        document.addEventListener("keyup", (event) => {
+            if (event.key === "Tab") {
+                return
+            }
+            counterEvent() 
+        })
     }
 
     const counterObj = {
@@ -466,42 +475,160 @@ export const displayController = (function() {
         projectCount: 0,
     }
 
+    const counterLimitTracker = {
+        isTitleTooLong: false,
+        isDescriptionTooLong: false,
+        isNotesTooLong: false,
+        isProjectTooLong: false,
+    }
+
     function resetCounter() {
         counterObj.titleCount = 0
         counterObj.descriptionCount = 0
         counterObj.notesCount = 0
         counterObj.projectCount = 0
 
+        counterLimitTracker.isTitleTooLong = false
+        counterLimitTracker.isDescriptionTooLong = false
+        counterLimitTracker.isNotesTooLong = false
+        counterLimitTracker.isProjectTooLong = false
+
         counterEl.textContent = ""
     }
 
     function counterEvent() {
-        const titleLimit = 60
-        const descriptionLimit = 100
-        const notesLimit = 300
-        const projectLimit = 60
+        const counterLimits = {
+            titleLimit: 60,
+            descriptionLimit: 100,
+            notesLimit: 300,
+            projectLimit:60,
+        }
+
+        let isPastLimit = false
 
         switch (getInputIdentifier()) {
             case "title":
                 counterObj.titleCount = getActiveInputLength()
-                counterEl.textContent = `${counterObj.titleCount} / ${titleLimit}`
+                counterEl.textContent = `${counterObj.titleCount} / ${counterLimits.titleLimit}`
+
+                isPastLimit = counterLimitTracker.isTitleTooLong
+                inputLimiter(counterObj.titleCount, counterLimits.titleLimit, isPastLimit)
+                checkIfDisableButton()
+                updateCounterStyling(counterObj.titleCount / counterLimits.titleLimit)
                 break
             case "description":
                 counterObj.descriptionCount = getActiveInputLength()
-                counterEl.textContent = `${counterObj.descriptionCount} / ${descriptionLimit}`
+                counterEl.textContent = `${counterObj.descriptionCount} / ${counterLimits.descriptionLimit}`
+
+                isPastLimit = counterLimitTracker.isdescriptionTooLong
+                inputLimiter(counterObj.descriptionCount, counterLimits.descriptionLimit, isPastLimit)
+                checkIfDisableButton()
+                updateCounterStyling(counterObj.descriptionCount / counterLimits.descriptionLimit)
                 break
             case "notes":
                 counterObj.notesCount = getActiveInputLength()
-                counterEl.textContent = `${counterObj.notesCount} / ${notesLimit}`
+                counterEl.textContent = `${counterObj.notesCount} / ${counterLimits.notesLimit}`
+
+                isPastLimit = counterLimitTracker.isNotesTooLong
+                inputLimiter(counterObj.notesCount, counterLimits.notesLimit, isPastLimit)
+                checkIfDisableButton()
+                updateCounterStyling(counterObj.notesCount / counterLimits.notesLimit)
                 break
             case "project":
                 counterObj.projectCount = getActiveInputLength()
-                counterEl.textContent = `${counterObj.projectCount} / ${projectLimit}`
+                counterEl.textContent = `${counterObj.projectCount} / ${counterLimits.projectLimit}`
+
+                isPastLimit = counterLimitTracker.isProjectTooLong
+                inputLimiter(counterObj.projectCount, counterLimits.projectLimit, isPastLimit)
+                checkIfDisableButton()
+                updateCounterStyling(counterObj.projectCount / counterLimits.projectLimit)
                 break
         }
         console.log(counterObj)
+        return counterLimits
     }
 
+    function inputLimiter(countProp, countLimit, isPastLimit) {
+        const activeElement = document.activeElement
+        let inputIdentifier = getInputIdentifier()
+
+        if (countProp > countLimit) {
+            if (!activeElement.classList.contains("overmax")) {
+                activeElement.classList.add("overmax")
+                isPastLimit = true
+                updateCounterLimitTracker(inputIdentifier, true)
+            }
+        } else if (countProp <= countLimit) {
+            if (activeElement.classList.contains("overmax")) {
+                activeElement.classList.remove("overmax")
+                isPastLimit = false
+                updateCounterLimitTracker(inputIdentifier, false)
+            }
+        }
+        console.log(counterLimitTracker)
+    }
+
+    function updateCounterLimitTracker(identifier, isPastLimit) {
+        switch (identifier) {
+            case "title":
+                counterLimitTracker.isTitleTooLong = isPastLimit;
+                break;
+            case "description":
+                counterLimitTracker.isDescriptionTooLong = isPastLimit;
+                break;
+            case "notes":
+                counterLimitTracker.isNotesTooLong = isPastLimit;
+                break;
+            case "project":
+                counterLimitTracker.isProjectTooLong = isPastLimit;
+                break;
+        }
+    }
+
+    function checkIfDisableButton() {
+        let anyPropertyTrue = false
+        let isAtodoDialog = false
+
+        const getCurrentDialogState = getSubmitBtnState()
+
+        if (getCurrentDialogState === "new-todo" ||
+            getCurrentDialogState === "edit-todo") {
+                isAtodoDialog = true
+                console.log("is a todo dialog")
+        }
+    
+        for (const [key, value] of Object.entries(counterLimitTracker)) {
+            if (value === true) {
+                anyPropertyTrue = true;
+                break
+            }
+        }
+    
+        if (anyPropertyTrue || (!counterObj.titleCount && isAtodoDialog)) {
+            submitBtnEl.setAttribute("disabled", "disabled")
+        } else {
+            submitBtnEl.removeAttribute("disabled")
+        }
+    }
+
+    function updateCounterStyling(ratio) {
+        if (ratio > 0.75) {
+            counterEl.classList.remove("hidden")
+            counterEl.classList.remove("overcap")
+
+        } else if (ratio <= 0.75) {
+            if(!counterEl.classList.contains("hidden")) {
+                counterEl.classList.add("hidden")
+            }
+        }
+        if (ratio > 1) {
+            if (!counterEl.classList.contains("overcap")) {
+                counterEl.classList.add("overcap")
+            }
+        }
+
+
+    }
 
 
     return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName, togglePanelInvisible, toggleIsDoneEvent, editProjectForm }

@@ -38,6 +38,14 @@
     display: none;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
+.overcap {
+    color: red;
+}
+
 .form-content * {
     display: block;
 }
