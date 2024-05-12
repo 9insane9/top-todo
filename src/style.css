@@ -1,3 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    border: 1px solid cyan;
+}
+
 .display-top {
     display: flex;
     border: 1px solid green;
@@ -10,18 +17,24 @@
     border: 1px solid red;
 }
 
+.add-button {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+
 .project-tile {
     height: 100px;
     width: 200px;
     border: 1px solid green;
 }
 
-.edit-project, .delete-project {
+.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button, .projects-button {
     width: 40px;
     height: 40px;
 }
 
-.edit-project:hover, .delete-project:hover {
+.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover {
     filter: drop-shadow(3px 3px 3px red);
 }
 

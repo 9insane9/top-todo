@@ -67,17 +67,6 @@ class Todo {
     }
 }
 
-const testObj = {
-    title: "test title",
-    description: "test description",
-    dueDate: "test duedate",
-    notes: "test notes",
-    isHighPriority: false,
-    isDone: false
-}
-
-// testFunction()
-
 function app() {
     const currentProjectIndex = () => {return displayController.getCurrentProjectIndex() }
     let isProjectPanelVisible = true
@@ -126,15 +115,28 @@ function app() {
                     dialogEl.showModal()
                     displayController.renderViewTodo(ProjectHandler.projectsArray, currentProjectIndex(), todoIndex);
                     attachEditBtnEvent()
-                } else if (classList.contains("delete-btn")) {
-                    ProjectHandler.deleteTodo(currentProjectIndex(), todoIndex)
-                    refreshApp()
+                    attachDeleteBtnEvent()
                 } else if (classList.contains("is-done-btn")) {
                     displayController.toggleIsDoneEvent();
                     ProjectHandler.projectsArray[currentProjectIndex()].todos[todoIndex].toggleisDone()
                     refreshApp()
                 }
             })
+        })
+    }
+
+    function attachDeleteBtnEvent() {
+        const deleteBtnEl = document.querySelector(".delete-btn")
+        const dialogEl = document.querySelector(".dialog")
+
+        deleteBtnEl.addEventListener("click", (e) => {
+            const todoIndex = e.target.getAttribute("data-index")
+            lastClickedTodoIndex = todoIndex
+            console.log(`last clicked project is ${lastClickedProjectIndex}`)
+
+            ProjectHandler.deleteTodo(currentProjectIndex(), todoIndex)
+            dialogEl.close()
+            refreshApp()
         })
     }
 
@@ -180,6 +182,8 @@ function app() {
                 ProjectHandler.projectsArray[lastClickedProjectIndex].editName(newName)
                 break
         }
+        
+        document.querySelector(".dialog").close()
         refreshApp()
 
     }
@@ -242,17 +246,3 @@ function app() {
 }
 
 app()
-
-// function testFunction() {
-//     ProjectHandler.addProject()
-//     ProjectHandler.addProject("testproject2")
-//     ProjectHandler.addTodo(0, testObj)
-//     ProjectHandler.addTodo(1, testObj)
-//     ProjectHandler.projectsArray[0].todos[0].editProperty("description", "first test")
-//     ProjectHandler.projectsArray[1].todos[0].editProperty("description", "another test")
-//     ProjectHandler.projectsArray[0].todos[0].editProperty("title", "first todo on first list")
-//     ProjectHandler.projectsArray[1].todos[0].editProperty("title", "first todo, second list")
-//     ProjectHandler.projectsArray[0].todos[0].togglePriority()
-//     ProjectHandler.projectsArray[0].todos[0].toggleisDone()
-//     ProjectHandler.projectsArray[0].editName("newName")
-// }
