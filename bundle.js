@@ -1092,9 +1092,9 @@ const displayController = (function() {
         todoDescriptionInputEl.setAttribute("type", "text")
         todoDueDateInputEl.setAttribute("type", "date")
 
-        todoTitleInputEl.setAttribute("placeholder", "play gaem")
-        todoDescriptionInputEl.setAttribute("placeholder", "description of gaem")
-        todoNotesInputEl.setAttribute("placeholder", "Lorem ipsum yadda yadda yadda yadda yadda yadda yadda")
+        todoTitleInputEl.setAttribute("placeholder", "snappyNameForTask")
+        todoDescriptionInputEl.setAttribute("placeholder", "shortDescription")
+        todoNotesInputEl.setAttribute("placeholder", "upTo300charactersOfNotesForDetailedInformationIfYouSoDesireButItIsOptionalJustLikeTheDescription")
 
         const deleteExists = document.querySelector(".delete-project")
 
