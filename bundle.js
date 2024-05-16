@@ -20,10 +20,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lilita+One&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `* {
+___CSS_LOADER_EXPORT___.push([module.id, `.lilita-one-regular {
+    font-family: "Lilita One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+* {
     box-sizing: border-box;
     font-size: 20px;
+    font-family: "Lilita One", sans-serif;
+    font-weight: 300;
+}
+
+input, textarea {
+    font-family: "Lilita One", sans-serif;
+    font-weight: 300;
 }
 
 body {
@@ -111,6 +125,12 @@ body {
     overflow-wrap: break-word;
 }
 
+.todo-duedate {
+    font-weight: 100;
+    font-style: italic;
+    font-size: smaller;
+}
+
 .todo-btns-container {
     display: flex;
     gap: 20px;
@@ -165,7 +185,6 @@ body {
 
 /* PROJECT DIALOG */
 .isproject {
-    /* width: 95vw; */
     height: 60vw;
     padding: 2vw 3vw;
 }
@@ -175,6 +194,7 @@ body {
     padding: 5px 5px 5px 10px;
     border-radius: 10px;
     margin: 3vw auto;
+    width: 100%;
 }
 
 .description-view {
@@ -240,7 +260,7 @@ textarea.notes {
     display: flex;
     justify-content: space-between;
 }
-`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;IACI,sBAAsB;IACtB,eAAe;AACnB;;AAEA;IACI,UAAU;IACV,SAAS;AACb;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,kBAAkB;AACtB;;AAEA,gBAAgB;AAChB;IACI,kBAAkB;IAClB,aAAa;IACb,sBAAsB;IACtB,cAAc;IACd,sBAAsB;IACtB,kCAAkC;IAClC,aAAa;IACb,gBAAgB;AACpB;;AAEA;IACI,gBAAgB;IAChB,MAAM;IACN,aAAa;IACb,8BAA8B;IAC9B,aAAa;IACb,aAAa;IACb,2BAA2B;AAC/B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,mEAAmE;AACvE;;AAEA;IACI,WAAW;IACX,YAAY;AAChB;;AAEA,iBAAiB;AACjB;IACI,aAAa;IACb,mBAAmB;IACnB,2BAA2B;IAC3B,YAAY;IACZ,WAAW;IACX,uBAAuB;AAC3B;;AAEA;IACI,kBAAkB;IAClB,yBAAyB;AAC7B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,4BAA4B;AAChC;;AAEA,cAAc;AACd;IACI,aAAa;IACb,mBAAmB;IACnB,8BAA8B;IAC9B,iBAAiB;IACjB,uBAAuB;AAC3B;;AAEA;IACI,UAAU;IACV,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,SAAS;AACb;;AAEA,YAAY;AACZ;IACI,WAAW;IACX,YAAY;AAChB;;AAEA;IACI,oCAAoC;AACxC;;AAEA,WAAW;AACX;IACI,kBAAkB;IAClB,WAAW;IACX,YAAY;IACZ,aAAa;IACb,mBAAmB;AACvB;;AAEA;IACI,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI;AACJ;;AAEA;IACI,kBAAkB;IAClB,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,UAAU;AACd;;AAEA;IACI,mBAAmB;AACvB;;AAEA,mBAAmB;AACnB;IACI,iBAAiB;IACjB,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,mBAAmB;IACnB,gBAAgB;AACpB;;AAEA;IACI,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,2BAA2B;IAC3B,8BAA8B;IAC9B,eAAe;AACnB;;AAEA;IACI,kBAAkB;AACtB;;AAEA,4BAA4B;AAC5B;IACI,YAAY;AAChB;;AAEA;IACI,qBAAqB;IACrB,mBAAmB;IACnB,WAAW;IACX,kBAAkB;IAClB,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,kBAAkB;AACtB;;AAEA;IACI,YAAY;IACZ,iBAAiB;AACrB;;AAEA,qBAAqB;AACrB;IACI,YAAY;AAChB;;AAEA;IACI,YAAY;IACZ,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,uBAAuB;IACvB,yBAAyB;IACzB,kBAAkB;AACtB;;AAEA;IACI,YAAY;AAChB;;AAEA;IACI,aAAa;IACb,8BAA8B;AAClC","sourcesContent":["* {\n    box-sizing: border-box;\n    font-size: 20px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n}\n\n.invisible {\n    display: none;\n}\n\n.hidden {\n    visibility: hidden;\n}\n\n/* MAIN DISPLAY*/\n.container {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    margin: 0 auto;\n    border: 1px solid cyan;\n    width: clamp(300px, 100vw, 1000px);\n    height: 100vh;\n    overflow: scroll;\n}\n\n.display-header {\n    position: sticky;\n    top: 0;\n    display: flex;\n    justify-content: space-between;\n    padding: 10px;\n    height: 100px;\n    background-color: gainsboro;\n}\n\n.left-panel, .right-panel {\n    width: 100%;\n}\n\n.add-button {\n    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);\n}\n\n.projects-button, .add-button {\n    width: 20vw;\n    height: 20vw;\n}\n\n/* PROJECT TILE */\n.project-tile {\n    display: flex;\n    align-items: center;\n    justify-content: flex-start;\n    height: 15vh;\n    width: 100%;\n    border: 1px solid green;\n}\n\n.project-name {\n    font-size: 1.25rem;\n    overflow-wrap: break-word;\n}\n\n.edit-project {\n    margin: 3vw;\n}\n\n.project-tile:hover {\n    background-color: aquamarine;\n}\n\n/* TODO TILE */\n.todo {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 5px 10px;\n    border: 1px solid green;\n}\n\n.todo-text-container {\n    width: 60%;\n    overflow-wrap: break-word;\n}\n\n.todo-btns-container {\n    display: flex;\n    gap: 20px;\n}\n\n/* BUTTONS */\n.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button {\n    width: 15vw;\n    height: 15vw;\n}\n\n.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {\n    filter: drop-shadow(3px 3px 3px red);\n}\n\n/* DIALOG */\n.dialog {\n    position: relative;\n    width: 98vw;\n    height: 90vh;\n    padding: 10px;\n    border-radius: 10px;\n}\n\n.form-content {\n    max-width: 90vw;\n}\n\n.dialog-close-container {\n    text-align: right;\n}\n\n.dialog::backdrop {\n    background: rgba(0, 0, 0, 0.85)\n}\n\n.counter {\n    position: absolute;\n    top: 10vw;\n    left: 10vw;\n    font-size: 1.25rem;\n    color: goldenrod;\n}\n\n.overcap {\n    color: red;\n}\n\n.submit-disabled {\n    filter: invert(50%);\n}\n\n/* PROJECT DIALOG */\n.isproject {\n    /* width: 95vw; */\n    height: 60vw;\n    padding: 2vw 3vw;\n}\n\n.project-name-input {\n    border: 1px solid red;\n    padding: 5px 5px 5px 10px;\n    border-radius: 10px;\n    margin: 3vw auto;\n}\n\n.description-view {\n    font-style: italic;\n}\n\n.btn-container {\n    display: flex;\n    flex-direction: row-reverse;\n    justify-content: space-between;\n    margin-top: 5vw;\n}\n\n.new-project-submit {\n    /* float: right; */\n}\n\n/* EDIT or NEW TODO DIALOG */\n.todo-dialog-container {\n    padding: 3vw;\n}\n\n.form-input {\n    border: 1px solid red;\n    border-radius: 10px;\n    width: 100%;\n    margin-bottom: 3vw;\n    padding: 5px 0 5px 10px;\n}\n\ntextarea.notes {\n    height: 35vh;\n    padding-right: 5px;\n}\n\n.new-todo-submit, .edit-todo-submit {\n    float: right;\n    margin-right: 3vw;\n}\n\n/* VIEW TODO DIALOG */\n.todo-view-container {\n    padding: 3vw;\n}\n\n.description-view {\n    height: 15vh;\n    border: 1px solid green;\n}\n\n.notes-view {\n    height: 20vh;\n    border: 1px solid green;\n    overflow-wrap: break-word;\n    overflow-y: scroll;\n}\n\n.description-view, .notes-view {\n    padding: 5px;\n}\n\n.buttons-container {\n    display: flex;\n    justify-content: space-between;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAEA;IACI,qCAAqC;IACrC,gBAAgB;IAChB,kBAAkB;EACpB;;AAEF;IACI,sBAAsB;IACtB,eAAe;IACf,qCAAqC;IACrC,gBAAgB;AACpB;;AAEA;IACI,qCAAqC;IACrC,gBAAgB;AACpB;;AAEA;IACI,UAAU;IACV,SAAS;AACb;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,kBAAkB;AACtB;;AAEA,gBAAgB;AAChB;IACI,kBAAkB;IAClB,aAAa;IACb,sBAAsB;IACtB,cAAc;IACd,sBAAsB;IACtB,kCAAkC;IAClC,aAAa;IACb,gBAAgB;AACpB;;AAEA;IACI,gBAAgB;IAChB,MAAM;IACN,aAAa;IACb,8BAA8B;IAC9B,aAAa;IACb,aAAa;IACb,2BAA2B;AAC/B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,mEAAmE;AACvE;;AAEA;IACI,WAAW;IACX,YAAY;AAChB;;AAEA,iBAAiB;AACjB;IACI,aAAa;IACb,mBAAmB;IACnB,2BAA2B;IAC3B,YAAY;IACZ,WAAW;IACX,uBAAuB;AAC3B;;AAEA;IACI,kBAAkB;IAClB,yBAAyB;AAC7B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,4BAA4B;AAChC;;AAEA,cAAc;AACd;IACI,aAAa;IACb,mBAAmB;IACnB,8BAA8B;IAC9B,iBAAiB;IACjB,uBAAuB;AAC3B;;AAEA;IACI,UAAU;IACV,yBAAyB;AAC7B;;AAEA;IACI,gBAAgB;IAChB,kBAAkB;IAClB,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,SAAS;AACb;;AAEA,YAAY;AACZ;IACI,WAAW;IACX,YAAY;AAChB;;AAEA;IACI,oCAAoC;AACxC;;AAEA,WAAW;AACX;IACI,kBAAkB;IAClB,WAAW;IACX,YAAY;IACZ,aAAa;IACb,mBAAmB;AACvB;;AAEA;IACI,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI;AACJ;;AAEA;IACI,kBAAkB;IAClB,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,UAAU;AACd;;AAEA;IACI,mBAAmB;AACvB;;AAEA,mBAAmB;AACnB;IACI,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,mBAAmB;IACnB,gBAAgB;IAChB,WAAW;AACf;;AAEA;IACI,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,2BAA2B;IAC3B,8BAA8B;IAC9B,eAAe;AACnB;;AAEA;IACI,kBAAkB;AACtB;;AAEA,4BAA4B;AAC5B;IACI,YAAY;AAChB;;AAEA;IACI,qBAAqB;IACrB,mBAAmB;IACnB,WAAW;IACX,kBAAkB;IAClB,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,kBAAkB;AACtB;;AAEA;IACI,YAAY;IACZ,iBAAiB;AACrB;;AAEA,qBAAqB;AACrB;IACI,YAAY;AAChB;;AAEA;IACI,YAAY;IACZ,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,uBAAuB;IACvB,yBAAyB;IACzB,kBAAkB;AACtB;;AAEA;IACI,YAAY;AAChB;;AAEA;IACI,aAAa;IACb,8BAA8B;AAClC","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');\n\n.lilita-one-regular {\n    font-family: \"Lilita One\", sans-serif;\n    font-weight: 400;\n    font-style: normal;\n  }\n\n* {\n    box-sizing: border-box;\n    font-size: 20px;\n    font-family: \"Lilita One\", sans-serif;\n    font-weight: 300;\n}\n\ninput, textarea {\n    font-family: \"Lilita One\", sans-serif;\n    font-weight: 300;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n}\n\n.invisible {\n    display: none;\n}\n\n.hidden {\n    visibility: hidden;\n}\n\n/* MAIN DISPLAY*/\n.container {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    margin: 0 auto;\n    border: 1px solid cyan;\n    width: clamp(300px, 100vw, 1000px);\n    height: 100vh;\n    overflow: scroll;\n}\n\n.display-header {\n    position: sticky;\n    top: 0;\n    display: flex;\n    justify-content: space-between;\n    padding: 10px;\n    height: 100px;\n    background-color: gainsboro;\n}\n\n.left-panel, .right-panel {\n    width: 100%;\n}\n\n.add-button {\n    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);\n}\n\n.projects-button, .add-button {\n    width: 20vw;\n    height: 20vw;\n}\n\n/* PROJECT TILE */\n.project-tile {\n    display: flex;\n    align-items: center;\n    justify-content: flex-start;\n    height: 15vh;\n    width: 100%;\n    border: 1px solid green;\n}\n\n.project-name {\n    font-size: 1.25rem;\n    overflow-wrap: break-word;\n}\n\n.edit-project {\n    margin: 3vw;\n}\n\n.project-tile:hover {\n    background-color: aquamarine;\n}\n\n/* TODO TILE */\n.todo {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 5px 10px;\n    border: 1px solid green;\n}\n\n.todo-text-container {\n    width: 60%;\n    overflow-wrap: break-word;\n}\n\n.todo-duedate {\n    font-weight: 100;\n    font-style: italic;\n    font-size: smaller;\n}\n\n.todo-btns-container {\n    display: flex;\n    gap: 20px;\n}\n\n/* BUTTONS */\n.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button {\n    width: 15vw;\n    height: 15vw;\n}\n\n.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {\n    filter: drop-shadow(3px 3px 3px red);\n}\n\n/* DIALOG */\n.dialog {\n    position: relative;\n    width: 98vw;\n    height: 90vh;\n    padding: 10px;\n    border-radius: 10px;\n}\n\n.form-content {\n    max-width: 90vw;\n}\n\n.dialog-close-container {\n    text-align: right;\n}\n\n.dialog::backdrop {\n    background: rgba(0, 0, 0, 0.85)\n}\n\n.counter {\n    position: absolute;\n    top: 10vw;\n    left: 10vw;\n    font-size: 1.25rem;\n    color: goldenrod;\n}\n\n.overcap {\n    color: red;\n}\n\n.submit-disabled {\n    filter: invert(50%);\n}\n\n/* PROJECT DIALOG */\n.isproject {\n    height: 60vw;\n    padding: 2vw 3vw;\n}\n\n.project-name-input {\n    border: 1px solid red;\n    padding: 5px 5px 5px 10px;\n    border-radius: 10px;\n    margin: 3vw auto;\n    width: 100%;\n}\n\n.description-view {\n    font-style: italic;\n}\n\n.btn-container {\n    display: flex;\n    flex-direction: row-reverse;\n    justify-content: space-between;\n    margin-top: 5vw;\n}\n\n.new-project-submit {\n    /* float: right; */\n}\n\n/* EDIT or NEW TODO DIALOG */\n.todo-dialog-container {\n    padding: 3vw;\n}\n\n.form-input {\n    border: 1px solid red;\n    border-radius: 10px;\n    width: 100%;\n    margin-bottom: 3vw;\n    padding: 5px 0 5px 10px;\n}\n\ntextarea.notes {\n    height: 35vh;\n    padding-right: 5px;\n}\n\n.new-todo-submit, .edit-todo-submit {\n    float: right;\n    margin-right: 3vw;\n}\n\n/* VIEW TODO DIALOG */\n.todo-view-container {\n    padding: 3vw;\n}\n\n.description-view {\n    height: 15vh;\n    border: 1px solid green;\n}\n\n.notes-view {\n    height: 20vh;\n    border: 1px solid green;\n    overflow-wrap: break-word;\n    overflow-y: scroll;\n}\n\n.description-view, .notes-view {\n    padding: 5px;\n}\n\n.buttons-container {\n    display: flex;\n    justify-content: space-between;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -952,7 +972,11 @@ const displayController = (function() {
         formEl.appendChild(formContentEl)
         btnContainerEl.appendChild(submitBtnEl)
         formEl.appendChild(btnContainerEl)
-        bodyEl.appendChild(containerEl)        
+        bodyEl.appendChild(containerEl)
+        
+        //set fonts
+        // const htmlEl = document.querySelector("html")
+        // htmlEl.classList.add("lilita-one-regular")
     }
 
     function renderProjects(projectsArray, projectIndex = 0) {
@@ -1332,20 +1356,25 @@ const displayController = (function() {
     }
 
     function toggleIsDoneEvent() {
-        const isDoneBtn = document.querySelector(".is-done-btn")
-        console.log(isDoneBtn)
-        let text
-
+        const isDoneBtn = document.querySelector(".is-done-btn");
+        const todoEl = isDoneBtn.closest(".todo");  // Assuming .todo is the parent of .is-done-btn
+        const grandParentEl = todoEl.parentElement;
+    
         if (isDoneBtn.classList.contains("not-done")) {
-            isDoneBtn.classList.remove("not-done")
-            isDoneBtn.classList.add("done")
-            text = "done"
+            isDoneBtn.classList.remove("not-done");
+            isDoneBtn.classList.add("done");
+            todoEl.classList.remove("not-done");
+            todoEl.classList.add("done");
+            grandParentEl.classList.remove("not-done");
+            grandParentEl.classList.add("done");
         } else if (isDoneBtn.classList.contains("done")) {
-            isDoneBtn.classList.remove("done")
-            isDoneBtn.classList.add("not-done")
-            text = "not done"
+            isDoneBtn.classList.remove("done");
+            isDoneBtn.classList.add("not-done");
+            todoEl.classList.remove("done");
+            todoEl.classList.add("not-done");
+            grandParentEl.classList.remove("done");
+            grandParentEl.classList.add("not-done");
         }
-        isDoneBtn.textContent = text
     }
 
     function getIsDone(todo, isDoneBtn) {
@@ -1353,12 +1382,12 @@ const displayController = (function() {
         if(todo.isDone) {
             isDoneBtn.classList.remove("not-done")
             isDoneBtn.classList.add("done")
-            return _images_checkbox_marked_png__WEBPACK_IMPORTED_MODULE_6__["default"]
         } else if (!todo.isDone) {
             isDoneBtn.classList.remove("done")
             isDoneBtn.classList.add("not-done")
-            return _images_checkbox_blank_png__WEBPACK_IMPORTED_MODULE_5__["default"]
         }
+        
+        return todo.isDone ? _images_checkbox_marked_png__WEBPACK_IMPORTED_MODULE_6__["default"] : _images_checkbox_blank_png__WEBPACK_IMPORTED_MODULE_5__["default"]
     }
 
     function getSubmitBtnState() {
