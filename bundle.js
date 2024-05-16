@@ -23,91 +23,12 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `* {
     box-sizing: border-box;
+    font-size: 20px;
 }
 
 body {
     padding: 0;
     margin: 0;
-}
-
-.container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    border: 1px solid cyan;
-    width: clamp(600px, 100vw, 1000px);
-    height: 100vh;
-    overflow: scroll;
-}
-
-.display-header {
-    top: 0;
-    height: 100px;
-    position: sticky;
-    background-color: gainsboro;
-}
-
-/* .display-top {
-    display: flex;
-    border: 1px solid green;
-    height: 100vh;
-    width: 100%;
-} */
-
-.left-panel {
-    width: 100%;
-    border: 1px solid red;
-}
-
-.right-panel {
-    width: 100%;
-    border: 1px solid blue;
-}
-
-.add-button {
-    z-index: 999;
-    position: absolute;
-    top: 0;
-    left: 86%;
-    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);
-}
-
-.project-tile {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height: 140px;
-    width: 100%;
-    border: 1px solid green;
-}
-
-.project-name, .todo-title, .todo-duedate {
-    font-size: 3rem;
-}
-
-.edit-project {
-    margin: 10px;
-}
-
-.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button, .projects-button, .add-button {
-    width: 100px;
-    height: 100px;
-}
-
-.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {
-    filter: drop-shadow(3px 3px 3px red);
-}
-
-.project-tile:hover {
-    background-color: aquamarine;
-}
-
-.project-name-input {
-    position: absolute;
-    top: 40%;
-    font-size: 3rem;
-    border: 1px solid red;
 }
 
 .invisible {
@@ -118,12 +39,76 @@ body {
     visibility: hidden;
 }
 
+/* MAIN DISPLAY*/
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    border: 1px solid cyan;
+    width: clamp(300px, 100vw, 1000px);
+    height: 100vh;
+    overflow: scroll;
+}
+
+.display-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    height: 100px;
+    background-color: gainsboro;
+}
+
+.left-panel, .right-panel {
+    width: 100%;
+}
+
+.add-button {
+    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);
+}
+
+.projects-button, .add-button {
+    width: 20vw;
+    height: 20vw;
+}
+
+/* PROJECT TILE */
+.project-tile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 15vh;
+    width: 100%;
+    border: 1px solid green;
+}
+
+.project-name {
+    font-size: 1.25rem;
+    overflow-wrap: break-word;
+}
+
+.edit-project {
+    margin: 3vw;
+}
+
+.project-tile:hover {
+    background-color: aquamarine;
+}
+
+/* TODO TILE */
 .todo {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 40px;
+    padding: 5px 10px;
     border: 1px solid green;
+}
+
+.todo-text-container {
+    width: 60%;
+    overflow-wrap: break-word;
 }
 
 .todo-btns-container {
@@ -131,19 +116,36 @@ body {
     gap: 20px;
 }
 
-.description-view {
-    font-style: italic;
+/* BUTTONS */
+.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button {
+    width: 15vw;
+    height: 15vw;
 }
 
+.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {
+    filter: drop-shadow(3px 3px 3px red);
+}
+
+/* DIALOG */
 .dialog {
     position: relative;
-    width: 95vw;
-    height: 95vh;
-    padding: 5px 30px;
+    width: 98vw;
+    height: 98vh;
+    padding: 10px;
+}
+
+.form-content {
+    max-width: 90vw;
+}
+
+.dialog-close-button {
+    position: absolute;
+    right: 5vw;
+    top: 5vw;
 }
 
 .dialog::backdrop {
-    background: rgba(0, 0, 0, 0.8)
+    background: rgba(0, 0, 0, 0.85)
 }
 
 .isproject {
@@ -151,81 +153,12 @@ body {
     height: 30vh;
 }
 
-.todo-dialog-container {
-    padding: 20px 20px;
-    margin-top: 100px;
-}
-
-.dialog-close-button {
-    position: absolute;
-    right: 4%;
-    top: 2%;
-}
-
-.form-content * {
-    display: block;
-}
-
-.form-input {
-    border: 1px solid red;
-    border-radius: 10px;
-    font-size: 3rem;
-    width: 80vw;
-    margin-bottom: 40px;
-    padding-left: 10px;
-}
-
-textarea.notes {
-    height: 35vh;
-}
-
-.todo-view-container {
-    /* height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
-    font-size: 3rem;
-}
-
-.description-view {
-    width: 80vw;
-    height: 15vh;
-    border: 1px solid green;
-}
-
-.notes-view {
-    width: 80vw;
-    height: 20vh;
-    border: 1px solid green;
-    overflow-wrap: break-word;
-    overflow-y: scroll;
-}
-
-.buttons-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    /* justify-self: flex-end; */
-}
-
-.edit-btn, .submit-button {
-    z-index: 999;
-    position: absolute;
-    right: 4%;
-    bottom: 2%;
-}
-
-.delete-btn, .delete-project {
-    position: absolute;
-    left: 4%;
-    bottom: 2%; 
-}
-
 .counter {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 4rem;
+    top: 10vw;
+    left: 10vw;
+    font-size: 1.25rem;
+    color: goldenrod;
 }
 
 .overcap {
@@ -235,7 +168,67 @@ textarea.notes {
 .submit-disabled {
     filter: invert(50%);
 }
-`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;IACI,sBAAsB;AAC1B;;AAEA;IACI,UAAU;IACV,SAAS;AACb;;AAEA;IACI,kBAAkB;IAClB,aAAa;IACb,sBAAsB;IACtB,cAAc;IACd,sBAAsB;IACtB,kCAAkC;IAClC,aAAa;IACb,gBAAgB;AACpB;;AAEA;IACI,MAAM;IACN,aAAa;IACb,gBAAgB;IAChB,2BAA2B;AAC/B;;AAEA;;;;;GAKG;;AAEH;IACI,WAAW;IACX,qBAAqB;AACzB;;AAEA;IACI,WAAW;IACX,sBAAsB;AAC1B;;AAEA;IACI,YAAY;IACZ,kBAAkB;IAClB,MAAM;IACN,SAAS;IACT,mEAAmE;AACvE;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,2BAA2B;IAC3B,aAAa;IACb,WAAW;IACX,uBAAuB;AAC3B;;AAEA;IACI,eAAe;AACnB;;AAEA;IACI,YAAY;AAChB;;AAEA;IACI,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,oCAAoC;AACxC;;AAEA;IACI,4BAA4B;AAChC;;AAEA;IACI,kBAAkB;IAClB,QAAQ;IACR,eAAe;IACf,qBAAqB;AACzB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,8BAA8B;IAC9B,iBAAiB;IACjB,uBAAuB;AAC3B;;AAEA;IACI,aAAa;IACb,SAAS;AACb;;AAEA;IACI,kBAAkB;AACtB;;AAEA;IACI,kBAAkB;IAClB,WAAW;IACX,YAAY;IACZ,iBAAiB;AACrB;;AAEA;IACI;AACJ;;AAEA;IACI,WAAW;IACX,YAAY;AAChB;;AAEA;IACI,kBAAkB;IAClB,iBAAiB;AACrB;;AAEA;IACI,kBAAkB;IAClB,SAAS;IACT,OAAO;AACX;;AAEA;IACI,cAAc;AAClB;;AAEA;IACI,qBAAqB;IACrB,mBAAmB;IACnB,eAAe;IACf,WAAW;IACX,mBAAmB;IACnB,kBAAkB;AACtB;;AAEA;IACI,YAAY;AAChB;;AAEA;IACI;;;qCAGiC;IACjC,eAAe;AACnB;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,uBAAuB;AAC3B;;AAEA;IACI,WAAW;IACX,YAAY;IACZ,uBAAuB;IACvB,yBAAyB;IACzB,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,mBAAmB;IACnB,8BAA8B;IAC9B,4BAA4B;AAChC;;AAEA;IACI,YAAY;IACZ,kBAAkB;IAClB,SAAS;IACT,UAAU;AACd;;AAEA;IACI,kBAAkB;IAClB,QAAQ;IACR,UAAU;AACd;;AAEA;IACI,kBAAkB;IAClB,SAAS;IACT,UAAU;IACV,eAAe;AACnB;;AAEA;IACI,UAAU;AACd;;AAEA;IACI,mBAAmB;AACvB","sourcesContent":["* {\n    box-sizing: border-box;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n}\n\n.container {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    margin: 0 auto;\n    border: 1px solid cyan;\n    width: clamp(600px, 100vw, 1000px);\n    height: 100vh;\n    overflow: scroll;\n}\n\n.display-header {\n    top: 0;\n    height: 100px;\n    position: sticky;\n    background-color: gainsboro;\n}\n\n/* .display-top {\n    display: flex;\n    border: 1px solid green;\n    height: 100vh;\n    width: 100%;\n} */\n\n.left-panel {\n    width: 100%;\n    border: 1px solid red;\n}\n\n.right-panel {\n    width: 100%;\n    border: 1px solid blue;\n}\n\n.add-button {\n    z-index: 999;\n    position: absolute;\n    top: 0;\n    left: 86%;\n    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);\n}\n\n.project-tile {\n    display: flex;\n    align-items: center;\n    justify-content: flex-start;\n    height: 140px;\n    width: 100%;\n    border: 1px solid green;\n}\n\n.project-name, .todo-title, .todo-duedate {\n    font-size: 3rem;\n}\n\n.edit-project {\n    margin: 10px;\n}\n\n.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button, .projects-button, .add-button {\n    width: 100px;\n    height: 100px;\n}\n\n.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {\n    filter: drop-shadow(3px 3px 3px red);\n}\n\n.project-tile:hover {\n    background-color: aquamarine;\n}\n\n.project-name-input {\n    position: absolute;\n    top: 40%;\n    font-size: 3rem;\n    border: 1px solid red;\n}\n\n.invisible {\n    display: none;\n}\n\n.hidden {\n    visibility: hidden;\n}\n\n.todo {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 5px 40px;\n    border: 1px solid green;\n}\n\n.todo-btns-container {\n    display: flex;\n    gap: 20px;\n}\n\n.description-view {\n    font-style: italic;\n}\n\n.dialog {\n    position: relative;\n    width: 95vw;\n    height: 95vh;\n    padding: 5px 30px;\n}\n\n.dialog::backdrop {\n    background: rgba(0, 0, 0, 0.8)\n}\n\n.isproject {\n    width: 95vw;\n    height: 30vh;\n}\n\n.todo-dialog-container {\n    padding: 20px 20px;\n    margin-top: 100px;\n}\n\n.dialog-close-button {\n    position: absolute;\n    right: 4%;\n    top: 2%;\n}\n\n.form-content * {\n    display: block;\n}\n\n.form-input {\n    border: 1px solid red;\n    border-radius: 10px;\n    font-size: 3rem;\n    width: 80vw;\n    margin-bottom: 40px;\n    padding-left: 10px;\n}\n\ntextarea.notes {\n    height: 35vh;\n}\n\n.todo-view-container {\n    /* height: 90vh;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between; */\n    font-size: 3rem;\n}\n\n.description-view {\n    width: 80vw;\n    height: 15vh;\n    border: 1px solid green;\n}\n\n.notes-view {\n    width: 80vw;\n    height: 20vh;\n    border: 1px solid green;\n    overflow-wrap: break-word;\n    overflow-y: scroll;\n}\n\n.buttons-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    /* justify-self: flex-end; */\n}\n\n.edit-btn, .submit-button {\n    z-index: 999;\n    position: absolute;\n    right: 4%;\n    bottom: 2%;\n}\n\n.delete-btn, .delete-project {\n    position: absolute;\n    left: 4%;\n    bottom: 2%; \n}\n\n.counter {\n    position: absolute;\n    top: 20px;\n    left: 20px;\n    font-size: 4rem;\n}\n\n.overcap {\n    color: red;\n}\n\n.submit-disabled {\n    filter: invert(50%);\n}\n"],"sourceRoot":""}]);
+
+/* PROJECT DIALOG */
+.project-name-input {
+    position: absolute;
+    top: 40%;
+    border: 1px solid red;
+}
+
+.description-view {
+    font-style: italic;
+}
+
+/* EDIT or NEW TODO DIALOG */
+.todo-dialog-container {
+    padding: 3vw;
+    margin-top: 8vh;
+}
+
+.form-input {
+    border: 1px solid red;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 3vw;
+    padding: 5px 0 5px 10px;
+}
+
+textarea.notes {
+    height: 35vh;
+    padding-right: 5px;
+}
+
+/* VIEW TODO DIALOG */
+.todo-view-container {
+    margin-top: 8vh;
+    padding: 3vw;
+}
+
+.description-view {
+    height: 15vh;
+    border: 1px solid green;
+}
+
+.notes-view {
+    height: 20vh;
+    border: 1px solid green;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+}
+
+.description-view, .notes-view {
+    padding: 5px;
+}
+
+.buttons-container {
+    position: absolute;
+    width: 70vw;
+    bottom: 4vh;
+    display: flex;
+    justify-content: space-between;
+}
+`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;IACI,sBAAsB;IACtB,eAAe;AACnB;;AAEA;IACI,UAAU;IACV,SAAS;AACb;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,kBAAkB;AACtB;;AAEA,gBAAgB;AAChB;IACI,kBAAkB;IAClB,aAAa;IACb,sBAAsB;IACtB,cAAc;IACd,sBAAsB;IACtB,kCAAkC;IAClC,aAAa;IACb,gBAAgB;AACpB;;AAEA;IACI,gBAAgB;IAChB,MAAM;IACN,aAAa;IACb,8BAA8B;IAC9B,aAAa;IACb,aAAa;IACb,2BAA2B;AAC/B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,mEAAmE;AACvE;;AAEA;IACI,WAAW;IACX,YAAY;AAChB;;AAEA,iBAAiB;AACjB;IACI,aAAa;IACb,mBAAmB;IACnB,2BAA2B;IAC3B,YAAY;IACZ,WAAW;IACX,uBAAuB;AAC3B;;AAEA;IACI,kBAAkB;IAClB,yBAAyB;AAC7B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,4BAA4B;AAChC;;AAEA,cAAc;AACd;IACI,aAAa;IACb,mBAAmB;IACnB,8BAA8B;IAC9B,iBAAiB;IACjB,uBAAuB;AAC3B;;AAEA;IACI,UAAU;IACV,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,SAAS;AACb;;AAEA,YAAY;AACZ;IACI,WAAW;IACX,YAAY;AAChB;;AAEA;IACI,oCAAoC;AACxC;;AAEA,WAAW;AACX;IACI,kBAAkB;IAClB,WAAW;IACX,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,eAAe;AACnB;;AAEA;IACI,kBAAkB;IAClB,UAAU;IACV,QAAQ;AACZ;;AAEA;IACI;AACJ;;AAEA;IACI,WAAW;IACX,YAAY;AAChB;;AAEA;IACI,kBAAkB;IAClB,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,gBAAgB;AACpB;;AAEA;IACI,UAAU;AACd;;AAEA;IACI,mBAAmB;AACvB;;AAEA,mBAAmB;AACnB;IACI,kBAAkB;IAClB,QAAQ;IACR,qBAAqB;AACzB;;AAEA;IACI,kBAAkB;AACtB;;AAEA,4BAA4B;AAC5B;IACI,YAAY;IACZ,eAAe;AACnB;;AAEA;IACI,qBAAqB;IACrB,mBAAmB;IACnB,WAAW;IACX,kBAAkB;IAClB,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,kBAAkB;AACtB;;AAEA,qBAAqB;AACrB;IACI,eAAe;IACf,YAAY;AAChB;;AAEA;IACI,YAAY;IACZ,uBAAuB;AAC3B;;AAEA;IACI,YAAY;IACZ,uBAAuB;IACvB,yBAAyB;IACzB,kBAAkB;AACtB;;AAEA;IACI,YAAY;AAChB;;AAEA;IACI,kBAAkB;IAClB,WAAW;IACX,WAAW;IACX,aAAa;IACb,8BAA8B;AAClC","sourcesContent":["* {\n    box-sizing: border-box;\n    font-size: 20px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n}\n\n.invisible {\n    display: none;\n}\n\n.hidden {\n    visibility: hidden;\n}\n\n/* MAIN DISPLAY*/\n.container {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    margin: 0 auto;\n    border: 1px solid cyan;\n    width: clamp(300px, 100vw, 1000px);\n    height: 100vh;\n    overflow: scroll;\n}\n\n.display-header {\n    position: sticky;\n    top: 0;\n    display: flex;\n    justify-content: space-between;\n    padding: 10px;\n    height: 100px;\n    background-color: gainsboro;\n}\n\n.left-panel, .right-panel {\n    width: 100%;\n}\n\n.add-button {\n    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);\n}\n\n.projects-button, .add-button {\n    width: 20vw;\n    height: 20vw;\n}\n\n/* PROJECT TILE */\n.project-tile {\n    display: flex;\n    align-items: center;\n    justify-content: flex-start;\n    height: 15vh;\n    width: 100%;\n    border: 1px solid green;\n}\n\n.project-name {\n    font-size: 1.25rem;\n    overflow-wrap: break-word;\n}\n\n.edit-project {\n    margin: 3vw;\n}\n\n.project-tile:hover {\n    background-color: aquamarine;\n}\n\n/* TODO TILE */\n.todo {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 5px 10px;\n    border: 1px solid green;\n}\n\n.todo-text-container {\n    width: 60%;\n    overflow-wrap: break-word;\n}\n\n.todo-btns-container {\n    display: flex;\n    gap: 20px;\n}\n\n/* BUTTONS */\n.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button {\n    width: 15vw;\n    height: 15vw;\n}\n\n.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {\n    filter: drop-shadow(3px 3px 3px red);\n}\n\n/* DIALOG */\n.dialog {\n    position: relative;\n    width: 98vw;\n    height: 98vh;\n    padding: 10px;\n}\n\n.form-content {\n    max-width: 90vw;\n}\n\n.dialog-close-button {\n    position: absolute;\n    right: 5vw;\n    top: 5vw;\n}\n\n.dialog::backdrop {\n    background: rgba(0, 0, 0, 0.85)\n}\n\n.isproject {\n    width: 95vw;\n    height: 30vh;\n}\n\n.counter {\n    position: absolute;\n    top: 10vw;\n    left: 10vw;\n    font-size: 1.25rem;\n    color: goldenrod;\n}\n\n.overcap {\n    color: red;\n}\n\n.submit-disabled {\n    filter: invert(50%);\n}\n\n/* PROJECT DIALOG */\n.project-name-input {\n    position: absolute;\n    top: 40%;\n    border: 1px solid red;\n}\n\n.description-view {\n    font-style: italic;\n}\n\n/* EDIT or NEW TODO DIALOG */\n.todo-dialog-container {\n    padding: 3vw;\n    margin-top: 8vh;\n}\n\n.form-input {\n    border: 1px solid red;\n    border-radius: 10px;\n    width: 100%;\n    margin-bottom: 3vw;\n    padding: 5px 0 5px 10px;\n}\n\ntextarea.notes {\n    height: 35vh;\n    padding-right: 5px;\n}\n\n/* VIEW TODO DIALOG */\n.todo-view-container {\n    margin-top: 8vh;\n    padding: 3vw;\n}\n\n.description-view {\n    height: 15vh;\n    border: 1px solid green;\n}\n\n.notes-view {\n    height: 20vh;\n    border: 1px solid green;\n    overflow-wrap: break-word;\n    overflow-y: scroll;\n}\n\n.description-view, .notes-view {\n    padding: 5px;\n}\n\n.buttons-container {\n    position: absolute;\n    width: 70vw;\n    bottom: 4vh;\n    display: flex;\n    justify-content: space-between;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
