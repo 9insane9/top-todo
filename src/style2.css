@@ -1,0 +1,214 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    border: 1px solid cyan;
+    width: clamp(600px, 100vw, 1000px);
+    height: 100vh;
+    overflow: scroll;
+}
+
+.display-header {
+    top: 0;
+    height: 100px;
+    position: sticky;
+    background-color: gainsboro;
+}
+
+/* .display-top {
+    display: flex;
+    border: 1px solid green;
+    height: 100vh;
+    width: 100%;
+} */
+
+.left-panel {
+    width: 100%;
+    border: 1px solid red;
+}
+
+.right-panel {
+    width: 100%;
+    border: 1px solid blue;
+}
+
+.add-button {
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 86%;
+    filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(80deg);
+}
+
+.project-tile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 140px;
+    width: 100%;
+    border: 1px solid green;
+}
+
+.project-name, .todo-title, .todo-duedate {
+    font-size: 3rem;
+}
+
+.edit-project {
+    margin: 10px;
+}
+
+.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button, .projects-button, .add-button {
+    width: 100px;
+    height: 100px;
+}
+
+.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {
+    filter: drop-shadow(3px 3px 3px red);
+}
+
+.project-tile:hover {
+    background-color: aquamarine;
+}
+
+.project-name-input {
+    position: absolute;
+    top: 40%;
+    font-size: 3rem;
+    border: 1px solid red;
+}
+
+.invisible {
+    display: none;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.todo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 40px;
+    border: 1px solid green;
+}
+
+.todo-btns-container {
+    display: flex;
+    gap: 20px;
+}
+
+.description-view {
+    font-style: italic;
+}
+
+.dialog {
+    position: relative;
+    width: 95vw;
+    height: 95vh;
+    padding: 5px 30px;
+}
+
+.dialog::backdrop {
+    background: rgba(0, 0, 0, 0.8)
+}
+
+.isproject {
+    width: 95vw;
+    height: 30vh;
+}
+
+.todo-dialog-container {
+    padding: 20px 20px;
+    margin-top: 100px;
+}
+
+.dialog-close-button {
+    position: absolute;
+    right: 4%;
+    top: 2%;
+}
+
+.form-content * {
+    display: block;
+}
+
+.form-input {
+    border: 1px solid red;
+    border-radius: 10px;
+    font-size: 3rem;
+    width: 80vw;
+    margin-bottom: 40px;
+    padding-left: 10px;
+}
+
+textarea.notes {
+    height: 35vh;
+}
+
+.todo-view-container {
+    /* height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; */
+    font-size: 3rem;
+}
+
+.description-view {
+    width: 80vw;
+    height: 15vh;
+    border: 1px solid green;
+}
+
+.notes-view {
+    width: 80vw;
+    height: 20vh;
+    border: 1px solid green;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* justify-self: flex-end; */
+}
+
+.edit-btn, .submit-button {
+    z-index: 999;
+    position: absolute;
+    right: 4%;
+    bottom: 2%;
+}
+
+.delete-btn, .delete-project {
+    position: absolute;
+    left: 4%;
+    bottom: 2%; 
+}
+
+.counter {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 4rem;
+}
+
+.overcap {
+    color: red;
+}
+
+.submit-disabled {
+    filter: invert(50%);
+}

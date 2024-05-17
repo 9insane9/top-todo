@@ -8,6 +8,7 @@ import checkboxBlankImg from './images/checkbox-blank.png'
 import checkboxMarkedImg from './images/checkbox-marked.png'
 import floppyDiskImg from './images/floppy-disk.png'
 import menuImg from './images/menu.png'
+import plusImg from './images/plus-box-outline.png'
 
 export const displayController = (function() {
     let currentProjectIndex = 0
@@ -19,10 +20,11 @@ export const displayController = (function() {
     const rightPanelEl = document.createElement("div")
     const displayHeaderEl = document.createElement("div")
     const projectsBtnEl = document.createElement("img")
-    const addBtn = document.createElement("button")
+    const addBtn = document.createElement("img")
     const dialogEl = document.createElement("dialog")
     const counterEl = document.createElement("div")
     const dialogCloseBtnEl = document.createElement("img")
+    const dialogCloseContainerEl = document.createElement("div")
     const formEl = document.createElement("form")
     const formContentEl = document.createElement("div")
     const submitBtnEl = document.createElement("img")
@@ -34,6 +36,8 @@ export const displayController = (function() {
     const todoPriorityEl = document.createElement("button")
     const btnContainerEl = document.createElement("div")
 
+    containerEl.setAttribute("spellcheck", "false")
+
     const nameInputEl = document.createElement("input")
 
     attachTogglePriorityButtonDisplayEvent()
@@ -44,10 +48,12 @@ export const displayController = (function() {
         displayTopEl.classList.add("display-top")
         leftPanelEl.classList.add("left-panel")
         rightPanelEl.classList.add("right-panel")
+        rightPanelEl.classList.add("invisible")
         displayHeaderEl.classList.add("display-header")
         dialogEl.classList.add("dialog")
         counterEl.classList.add("counter")
         dialogCloseBtnEl.classList.add("dialog-close-button")
+        dialogCloseContainerEl.classList.add("dialog-close-container")
         formEl.classList.add("form")
         formContentEl.classList.add("form-content")
         submitBtnEl.classList.add("submit-button")
@@ -60,9 +66,8 @@ export const displayController = (function() {
         submitBtnEl.setAttribute("formmethod", "dialog")
         submitBtnEl.setAttribute("value", "submit")
 
-        // projectsBtnEl.textContent = "PROJECTS"
         projectsBtnEl.setAttribute("src", menuImg)
-        addBtn.textContent = "ADD"
+        addBtn.setAttribute("src", plusImg)
         dialogCloseBtnEl.setAttribute("src", closeBoxImg)
 
         submitBtnEl.setAttribute("src", floppyDiskImg)
@@ -71,17 +76,22 @@ export const displayController = (function() {
         displayTopEl.appendChild(leftPanelEl)
         displayTopEl.appendChild(rightPanelEl)
         dialogEl.appendChild(counterEl)
-        dialogEl.appendChild(dialogCloseBtnEl)
+        dialogCloseContainerEl.appendChild(dialogCloseBtnEl)
+        dialogEl.appendChild(dialogCloseContainerEl)
         dialogEl.appendChild(formEl)
         containerEl.appendChild(displayHeaderEl)
         containerEl.appendChild(displayTopEl)
         displayHeaderEl.appendChild(projectsBtnEl)
-        containerEl.appendChild(addBtn)
+        displayHeaderEl.appendChild(addBtn)
         containerEl.appendChild(dialogEl)
         formEl.appendChild(formContentEl)
         btnContainerEl.appendChild(submitBtnEl)
         formEl.appendChild(btnContainerEl)
-        bodyEl.appendChild(containerEl)        
+        bodyEl.appendChild(containerEl)
+        
+        //set fonts
+        // const htmlEl = document.querySelector("html")
+        // htmlEl.classList.add("lilita-one-regular")
     }
 
     function renderProjects(projectsArray, projectIndex = 0) {
@@ -129,6 +139,7 @@ export const displayController = (function() {
                 const todoDueDateEl = document.createElement("h3")
                 const viewTodoBtnEl = document.createElement("img")
                 const isDoneBtn = document.createElement("img")
+                const todoTextContainer = document.createElement("div")
                 const todoBtnsContainer = document.createElement("div")
 
                 todoEl.setAttribute("data-index", index)
@@ -140,6 +151,7 @@ export const displayController = (function() {
                 todoDueDateEl.classList.add("todo-duedate")
                 viewTodoBtnEl.classList.add("view-btn")
                 isDoneBtn.classList.add("is-done-btn")
+                todoTextContainer.classList.add("todo-text-container")
                 todoBtnsContainer.classList.add("todo-btns-container")
 
                 todoTitleEl.textContent = todo.title
@@ -151,8 +163,10 @@ export const displayController = (function() {
                 todoBtnsContainer.appendChild(viewTodoBtnEl)
                 todoBtnsContainer.appendChild(isDoneBtn)
 
-                todoEl.appendChild(todoTitleEl)
-                todoEl.appendChild(todoDueDateEl)
+                todoTextContainer.appendChild(todoTitleEl)
+                todoTextContainer.appendChild(todoDueDateEl)
+
+                todoEl.appendChild(todoTextContainer)
                 todoEl.appendChild(todoBtnsContainer)
                 rightPanelEl.appendChild(todoEl)
         })
@@ -161,18 +175,25 @@ export const displayController = (function() {
 
 
     function renderDialog(isProjectPanelVisible = 0) {
+        resetDialogClass()
         dialogEl.showModal()
 
         const formContentEl = document.querySelector(".form-content")
         formContentEl.textContent = ""
 
         if (isProjectPanelVisible) {
+            dialogEl.classList.add("isproject")
+
             formContentEl.appendChild(projectDialog())
             nameInputEl.focus()
         } else {
             formContentEl.appendChild(todoDialog())
             todoTitleInputEl.focus()
         }
+    }
+
+    function resetDialogClass() {
+        dialogEl.classList.remove("isproject")
     }
 
 
@@ -192,6 +213,12 @@ export const displayController = (function() {
         nameInputEl.value = ""
 
         projectDialogContainerEl.appendChild(nameInputEl)
+
+        const deleteExists = document.querySelector(".delete-project")
+
+        if (deleteExists) {
+            btnContainerEl.removeChild(deleteExists)
+        }
 
         return projectDialogContainerEl
     }
@@ -219,9 +246,15 @@ export const displayController = (function() {
         todoDescriptionInputEl.setAttribute("type", "text")
         todoDueDateInputEl.setAttribute("type", "date")
 
-        todoTitleInputEl.setAttribute("placeholder", "play gaem")
-        todoDescriptionInputEl.setAttribute("placeholder", "description of gaem")
-        todoNotesInputEl.setAttribute("placeholder", "Lorem ipsum yadda yadda yadda yadda yadda yadda yadda")
+        todoTitleInputEl.setAttribute("placeholder", "snappyNameForTask")
+        todoDescriptionInputEl.setAttribute("placeholder", "shortDescription")
+        todoNotesInputEl.setAttribute("placeholder", "upTo300charactersOfNotesForDetailedInformationIfYouSoDesireButItIsOptionalJustLikeTheDescription")
+
+        const deleteExists = document.querySelector(".delete-project")
+
+        if (deleteExists) {
+            btnContainerEl.removeChild(deleteExists)
+        }
 
         todoDialogContainerEl.appendChild(todoTitleInputEl)
         todoDialogContainerEl.appendChild(todoDescriptionInputEl)
@@ -234,6 +267,7 @@ export const displayController = (function() {
 
     function togglePanelInvisible() {
         leftPanelEl.classList.toggle("invisible")
+        rightPanelEl.classList.toggle("invisible")
         addBtn.classList.toggle("add-todo")
     }
 
@@ -248,14 +282,14 @@ export const displayController = (function() {
         return currentProjectIndex
     }
 
-    function getTodoFormValues() {
+    function getTodoFormValues(todoIndex) {
         const obj = {
             title: todoTitleInputEl.value,
             description: todoDescriptionInputEl.value,
             dueDate: todoDueDateInputEl.value,
             notes: todoNotesInputEl.value,
             isHighPriority: getFormTodoPriority(),
-            isDone: false
+            isDone: getCurrentIsDoneState(todoIndex)
         }
 
         console.log(obj)
@@ -289,11 +323,28 @@ export const displayController = (function() {
         return [...todoPriorityEl.classList].includes("high-priority")
     }
 
+    function getCurrentIsDoneState(todoIndex) {
+        const isDoneBtn = document.querySelector(`.is-done-btn[data-index="${todoIndex}"]`)
+
+        if (isDoneBtn) {
+            return isDoneBtn.classList.contains("done")
+        } else {
+            return false
+        }
+    }
+
     function renderViewTodo(projectsArray, currentProjectIndex, todoIndex) {
         formContentEl.textContent = ""
         resetSubmitBtnClass()
         toggleSubmitInvisible()
         resetCounter()
+        resetDialogClass()
+
+        const deleteExists = document.querySelector(".delete-project")
+
+        if (deleteExists) {
+            btnContainerEl.removeChild(deleteExists)
+        }
 
         const todoViewContainer = document.createElement("div")
         todoViewContainer.classList.add("todo-view-container")
@@ -388,9 +439,15 @@ export const displayController = (function() {
 
         formContentEl.textContent = ""
         formContentEl.appendChild(projectDialog())
-        formContentEl.appendChild(deleteProjectEl)
-        // console.log("editing")
+        dialogEl.classList.add("isproject")
 
+        const deleteExists = document.querySelector(".delete-project")
+
+        if (!deleteExists) {
+            btnContainerEl.appendChild(deleteProjectEl)
+        }
+        // console.log("editing")
+        
         resetSubmitBtnClass()
         submitBtnEl.classList.add("edit-project-submit")
 
@@ -414,20 +471,25 @@ export const displayController = (function() {
     }
 
     function toggleIsDoneEvent() {
-        const isDoneBtn = document.querySelector(".is-done-btn")
-        console.log(isDoneBtn)
-        let text
-
+        const isDoneBtn = document.querySelector(".is-done-btn");
+        const todoEl = isDoneBtn.closest(".todo");  // Assuming .todo is the parent of .is-done-btn
+        const grandParentEl = todoEl.parentElement;
+    
         if (isDoneBtn.classList.contains("not-done")) {
-            isDoneBtn.classList.remove("not-done")
-            isDoneBtn.classList.add("done")
-            text = "done"
+            isDoneBtn.classList.remove("not-done");
+            isDoneBtn.classList.add("done");
+            todoEl.classList.remove("not-done");
+            todoEl.classList.add("done");
+            grandParentEl.classList.remove("not-done");
+            grandParentEl.classList.add("done");
         } else if (isDoneBtn.classList.contains("done")) {
-            isDoneBtn.classList.remove("done")
-            isDoneBtn.classList.add("not-done")
-            text = "not done"
+            isDoneBtn.classList.remove("done");
+            isDoneBtn.classList.add("not-done");
+            todoEl.classList.remove("done");
+            todoEl.classList.add("not-done");
+            grandParentEl.classList.remove("done");
+            grandParentEl.classList.add("not-done");
         }
-        isDoneBtn.textContent = text
     }
 
     function getIsDone(todo, isDoneBtn) {
@@ -435,12 +497,12 @@ export const displayController = (function() {
         if(todo.isDone) {
             isDoneBtn.classList.remove("not-done")
             isDoneBtn.classList.add("done")
-            return checkboxMarkedImg
         } else if (!todo.isDone) {
             isDoneBtn.classList.remove("done")
             isDoneBtn.classList.add("not-done")
-            return checkboxBlankImg
         }
+        
+        return todo.isDone ? checkboxMarkedImg : checkboxBlankImg
     }
 
     function getSubmitBtnState() {
@@ -542,10 +604,10 @@ export const displayController = (function() {
 
     function counterEvent() {
         const counterLimits = {
-            titleLimit: 60,
+            titleLimit: 30,
             descriptionLimit: 100,
             notesLimit: 300,
-            projectLimit:60,
+            projectLimit:30,
         }
 
         let isPastLimit = false
@@ -684,8 +746,7 @@ export const displayController = (function() {
 
 
     }
-
-
+    
     return { createMainLayout, renderProjects, renderTodos, renderDialog, renderViewTodo, getCurrentProjectIndex, getTodoFormValues, editTodoForm, getSubmitBtnState, getProjectName, togglePanelInvisible, toggleIsDoneEvent, editProjectForm }
 
 }())

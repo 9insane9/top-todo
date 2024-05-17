@@ -1,50 +1,33 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    border: 1px solid cyan;
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
+:root {
+    --text-btn-hover-color: #F9E8C9;
+    --bg-color: #201658;
+    --date-btn-color: #98ABEE;
+    --btn-shadow-border-color: #1D24CA;
 }
 
-.display-top {
-    display: flex;
-    border: 1px solid green;
-    height: 800px;
-    width: 1000px;
+.lilita-one-regular {
+    font-family: "Lilita One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+* {
+    box-sizing: border-box;
+    font-size: 20px;
+    font-family: "Lilita One", sans-serif;
+    font-weight: 300;
 }
 
-.left-panel {
-    width: 25%;
-    border: 1px solid red;
+input, textarea {
+    font-family: "Lilita One", sans-serif;
+    font-weight: 300;
 }
 
-.add-button {
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-}
-
-.project-tile {
-    height: 100px;
-    width: 200px;
-    border: 1px solid green;
-}
-
-.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button, .projects-button {
-    width: 40px;
-    height: 40px;
-}
-
-.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover {
-    filter: drop-shadow(3px 3px 3px red);
-}
-
-.project-tile:hover {
-    background-color: aquamarine;
-}
-
-.right-panel {
-    width: 75%;
-    border: 1px solid blue;
+body {
+    padding: 0;
+    margin: 0;
 }
 
 .invisible {
@@ -55,10 +38,263 @@
     visibility: hidden;
 }
 
+/* MAIN DISPLAY*/
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: clamp(300px, 100vw, 1000px);
+    height: 100vh;
+    overflow: scroll;
+    border: 2px solid var(--btn-shadow-border-color);
+    border-radius: 10px;
+}
+
+.display-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    height: 100px;
+    z-index: 999;
+}
+
+.left-panel, .right-panel {
+    width: 100%;
+}
+
+.projects-button, .add-button {
+    width: 20vw;
+    height: 20vw;
+}
+
+/* PROJECT TILE */
+.project-tile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 15vh;
+    width: 100%;
+}
+
+.project-name {
+    font-size: 1.25rem;
+    overflow-wrap: break-word;
+}
+
+.edit-project {
+    margin: 3vw;
+}
+
+/* TODO TILE */
+.todo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.todo-text-container {
+    width: 60%;
+    overflow-wrap: break-word;
+}
+
+.todo-title {
+    font-size: 1.1rem;
+}
+
+.todo-duedate {
+    font-weight: 100;
+    font-style: italic;
+    font-size: smaller;
+}
+
+.todo-btns-container {
+    display: flex;
+    gap: 20px;
+}
+
+/* BUTTONS */
+.edit-project, .delete-project, .dialog-close-button, .view-btn, .delete-btn, .is-done-btn, .edit-btn, .submit-button {
+    width: 15vw;
+    height: 15vw;
+}
+
+/* DIALOG */
+.dialog {
+    position: relative;
+    width: 98vw;
+    height: 90vh;
+    padding: 10px;
+    border: 2px solid var(--btn-shadow-border-color);
+    border-radius: 10px;
+}
+
+.form-content {
+    max-width: 90vw;
+}
+
+.dialog-close-container {
+    text-align: right;
+}
+
+.dialog::backdrop {
+    background: rgba(0, 0, 0, 0.85)
+}
+
+.counter {
+    position: absolute;
+    top: 10vw;
+    left: 10vw;
+    font-size: 1.25rem;
+    color: goldenrod;
+}
+
 .overcap {
     color: red;
 }
 
-.form-content * {
-    display: block;
+/* PROJECT DIALOG */
+.isproject {
+    height: 60vw;
+    padding: 2vw 3vw;
+}
+
+.project-name-input {
+    padding: 5px 5px 5px 10px;
+    border-radius: 10px;
+    margin: 3vw auto;
+    width: 100%;
+}
+
+.description-view {
+    font-style: italic;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: 5vw;
+}
+
+/* EDIT or NEW TODO DIALOG */
+.todo-dialog-container {
+    padding: 3vw;
+}
+
+.form-input {
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 3vw;
+    padding: 5px 0 5px 10px;
+}
+
+textarea.notes {
+    height: 35vh;
+    padding-right: 5px;
+}
+
+.new-todo-submit, .edit-todo-submit {
+    float: right;
+    margin-right: 3vw;
+}
+
+/* VIEW TODO DIALOG */
+.todo-view-container {
+    padding: 3vw;
+}
+
+.title-view {
+    text-decoration: underline;
+    text-decoration-color: #1D24CA;
+    text-underline-offset: 0.15rem;
+}
+
+.description-view {
+    height: 15vh;
+}
+
+.notes-view {
+    height: 20vh;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+}
+
+.date-view {
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.description-view, .notes-view {
+    padding: 5px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* COLORS */
+
+img {
+    filter: invert(70%) sepia(25%) saturate(1294%) hue-rotate(194deg) brightness(100%) contrast(87%);
+}
+
+.edit-project:hover, .delete-project:hover, .dialog-close-button:hover, .view-btn:hover, .delete-btn:hover, .is-done-btn:hover, .edit-btn:hover, .submit-button:hover, .projects-button:hover, .add-button:hover {
+    filter: drop-shadow(3px 3px 3px var(--btn-shadow-border-color));
+    filter: invert(70%) sepia(25%) saturate(1294%) hue-rotate(194deg) brightness(100%) contrast(87%);
+}
+
+.submit-disabled {
+    filter: invert(15%);
+}
+
+html, .display-header, .dialog {
+    color: var(--text-btn-hover-color);
+    background-color: var(--bg-color);
+}
+
+input, textarea {
+    color: var(--text-btn-hover-color);
+    background-color: var(--btn-shadow-border-color);
+}
+
+.project-tile, .todo, .display-header {
+    border-bottom: 1px solid var(--btn-shadow-border-color);
+}
+
+.project-tile:hover, .todo:hover {
+    background-color: var(--btn-shadow-border-color);
+}
+
+.notes-view, .description-view, input, textarea, button {
+    border: 1px solid var(--btn-shadow-border-color);
+}
+
+button {
+    color: var(--text-btn-hover-color);
+    background-color: #D6589F;
+}
+
+button.high-priority {
+    background-color: #D20062;
+}
+
+.priority-view, .is-done-view {
+    color: #D6589F;
+}
+
+.priority-view.priority-high, .is-done-view.task-not-done {
+    color: #D20062;
+}
+
+textarea:focus, input:focus {
+    outline: none !important;
+    border: 1px solid #D20062;
+    box-shadow: 1px 1px 1px #D20062;
 }

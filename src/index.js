@@ -142,8 +142,9 @@ function app() {
 
     function attachDialogEvent() {
         const addBtnEl = document.querySelector(".add-button")
-        addBtnEl.addEventListener("click", () => { 
+        addBtnEl.addEventListener("click", (e) => { 
             displayController.renderDialog(isProjectPanelVisible)
+            e.stopImmediatePropagation()
         })
     }
 
@@ -170,11 +171,11 @@ function app() {
                 ProjectHandler.addProject(displayController.getProjectName())
                 break
             case "new-todo":
-                const formValues = displayController.getTodoFormValues()
+                const formValues = displayController.getTodoFormValues(lastClickedTodoIndex)
                 ProjectHandler.addTodo(currentProjectIndex(), formValues)
                 break
             case "edit-todo":
-                const newFormValues = displayController.getTodoFormValues()
+                const newFormValues = displayController.getTodoFormValues(lastClickedTodoIndex)
                 ProjectHandler.editTodo(currentProjectIndex(), lastClickedTodoIndex, newFormValues)
                 break
             case "edit-project":
